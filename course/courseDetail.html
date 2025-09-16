@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>查看课程信息</title>
+		<link rel="stylesheet" href="../lib/layui-v2.6.3/css/layui.css">
+		<style>
+			.required::before {
+				/* 星号内容 */
+				content: "*";
+					/* 红色 */
+				color: #ff0000;
+				/* 与文字保持一点距离 */
+				margin-right: 4px;
+			/* 星号加粗 */
+				font-weight: bold;				
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 网页标题，这里用fieldset来设置 -->
+		<fieldset class="layui-elem-field layui-field-title">
+			<!-- 修改2：把“添加用户”换成自己的 -->
+			<legend style="font-weight: bold;">查看课程信息</legend>
+		</fieldset>
+		<div class="layui-form">
+			<div class="layui-form-item">
+				<label class="layui-form-label required">课程名称</label>
+				<div class="layui-input-block">
+				<input id="username" type="text" name="username" class="layui-input" lay-verify="required"
+					lay-reqtext="课程名称不能为空!" placeholder="请输入课程名称" value="基础瑜伽课1"  disabled readonly>
+					</div>
+			</div>
+			
+			<div class="layui-form-item">
+				<label class="layui-form-label required">课程类型</label>
+				<div class="layui-input-block">
+					<select lay-verify="required"  disabled readonly>
+						<option value="1" selected>团课</option>
+						<option value="2">私教课</option>
+						<option value="3">小班课</option>
+					</select>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label required">适合人群</label>
+				<div class="layui-input-block">
+					<select lay-verify="required"  disabled readonly>
+						<option value="1" selected>新手</option>
+						<option value="2">进阶</option>
+						<option value="3">专业</option>
+					</select>
+				</div>
+			</div>
+			
+			
+			<div class="layui-form-item">
+				<label class="layui-form-label required">课程讲师</label>
+				<div class="layui-input-block">
+				<input id="teacher" type="text" name="teacher" class="layui-input" lay-verify="required"
+					lay-reqtext="讲师名不能为空!" placeholder="请输入讲师名" value="张三" disabled readonly>
+					</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label class="layui-form-label required">上课场地</label>
+				<div class="layui-input-block">
+				   <input id="place" type="text" name="place" class="layui-input" lay-verify="required"
+					lay-reqtext="场地不能为空!" placeholder="请输入上课场地" value="瑜伽室A" disabled readonly>
+				</div>
+			</div>
+			
+			
+			<div class="layui-form-item">
+				<label class="layui-form-label required">课程时长</label>
+				<div class="layui-input-block">
+				   <input id="time" type="text" name="time" class="layui-input" lay-verify="required"
+				   	lay-reqtext="课程时长不能为空!" placeholder="请输入课程时长" value="60min" disabled readonly>
+				</div>
+			</div>
+			
+			<div class="layui-form-item">
+				<label class="layui-form-label required">所需器材</label>
+				<div class="layui-input-block">
+				   <input id="tool" type="text" name="tool" class="layui-input" lay-verify="required"
+				   	lay-reqtext="所需器材不能为空!" placeholder="请输入所需器材" value="瑜伽球" disabled readonly>
+				</div>
+			</div>
+			
+			<div class="layui-form-item">
+			   <label class="layui-form-label required">状态</label>
+			   <div class="layui-input-block">
+			       <input type="checkbox" name="status" lay-skin="switch" lay-filter="switchTest" lay-text="停课|开课" disabled readonly>
+			   </div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">课程简介</label>
+				<div class="layui-input-block">
+					<textarea   name="remark" class="layui-textarea" placeholder="请输入课程信息" disabled readonly></textarea>
+				</div>
+			</div> <!-- 文本域结束 -->
+		</div>	
+		<script src="../lib/layui-v2.6.3/layui.js"></script>
+	</body>
+</html>

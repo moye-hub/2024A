@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>查看收入</title>
+		<link rel="stylesheet" href="../lib/layui-v2.6.3/css/layui.css">
+		<style>
+			.required::before {
+				/* 星号内容 */
+				content: "*";
+					/* 红色 */
+				color: #ff0000;
+				/* 与文字保持一点距离 */
+				margin-right: 4px;
+			/* 星号加粗 */
+				font-weight: bold;				
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 网页标题，这里用fieldset来设置 -->
+		<fieldset class="layui-elem-field layui-field-title">
+			<!-- 修改2：把“添加用户”换成自己的 -->
+			<legend style="font-weight: bold;">查看收入</legend>
+		</fieldset>
+		<div class="layui-form">
+			<div class="layui-form-item">
+				<label class="layui-form-label required">账单ID</label>
+				<div class="layui-input-block">
+				<input id="classname" type="text" name="classname" class="layui-input" lay-verify="required"
+					lay-reqtext="账单ID不能为空!" placeholder="请输入账单ID" value="10000" disabled readonly>
+					</div>
+			</div>
+			
+			<div class="layui-form-item">
+				<label class="layui-form-label required">付款人</label>
+				<div class="layui-input-block">
+				<input id="man" type="text" name="man" class="layui-input" lay-verify="required"
+					lay-reqtext="付款人不能为空!" placeholder="请输入付款人" value="张三" disabled readonly>
+					</div>
+			</div>
+			
+			<div class="layui-form-item">
+				<label class="layui-form-label required">收款课程</label>
+				<div class="layui-input-block">
+				<input id="classa" type="text" name="classa" class="layui-input" lay-verify="required"
+					lay-reqtext="收款课程不能为空!" placeholder="请输入收款课程" value="基础瑜伽课" disabled readonly>
+					</div>
+			</div>
+			
+			<div class="layui-form-item">
+				<label class="layui-form-label required">收入类型</label>
+				<div class="layui-input-block">
+					<select lay-verify="required">
+						<option value="1" disabled readonly>会员费</option>
+						<option value="2" disabled readonly>私教课费</option>
+						<option value="3" selected>小班课费</option>
+						<option value="4" disabled readonly>器材租赁费</option>
+						<option value="5" disabled readonly>其他</option>
+					</select>
+				</div>
+			</div>
+			
+			<div class="layui-form-item">
+				<label class="layui-form-label required">收入金额</label>
+				<div class="layui-input-block">
+				<input id="time" type="text" name="time" class="layui-input" lay-verify="required"
+					lay-reqtext="收入金额不能为空!" placeholder="请输入收入金额" value="5000" disabled readonly>
+					</div>
+			</div>
+			
+			<div class="layui-form-item">
+				<label class="layui-form-label required">付款方式</label>
+				<div class="layui-input-block">
+					<select lay-verify="required">
+						<option value="1" selected>微信</option>
+						<option value="2" disabled readonly>支付宝</option>
+						<option value="3" disabled readonly>银行卡</option>
+						<option value="4" disabled readonly>现金</option>
+					</select>
+				</div>
+			</div>
+			
+			<div class="layui-form-item">
+			    <label class="layui-form-label required">收款日期</label>
+			    <div class="layui-input-block" style="width: 1425px;">
+			      <input type="text" class="layui-input" id="birthday" placeholder="yyyy-MM-dd" value="2025-04-24" disabled readonly>
+			    </div>
+			  </div>
+			  
+			<div class="layui-form-item">
+				<label class="layui-form-label required">课程等级</label>
+				<div class="layui-input-block">
+					<select lay-verify="required">
+						<option value="1" selected>新手</option>
+						<option value="2" disabled readonly>进阶</option>
+						<option value="3" disabled readonly>专业</option>
+					</select>
+				</div>
+			</div>
+			
+			<div class="layui-form-item">
+			   <label class="layui-form-label required">状态</label>
+			   <div class="layui-input-block">
+			       <input type="checkbox" name="status" lay-skin="switch" lay-filter="switchTest" lay-text="已收款|未收款" disabled readonly>
+			   </div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">备注</label>
+				<div class="layui-input-block">
+					<textarea   name="remark" class="layui-textarea" placeholder="请输入备注" disabled readonly></textarea>
+				</div>
+			</div> <!-- 文本域结束 -->
+		</div>	
+		<script src="../lib/layui-v2.6.3/layui.js"></script>
+		<script>
+			// 加载Layui中的form模块、layer模块
+			layui.use(['form', 'layer'], function() {
+				var form = layui.form; // 获得form模块
+				var layer = layui.layer; // 获得layer模块
+				$ = layui.$; // 获得jQuery中的$
+				$("#teacher").blur(function() {
+					var teacher = $("#teacher").val();
+					var reg = /^[\u4e00-\u9fa5]{2,10}$/; //正则表达式
+					if (teacher.length == 0 || teacher == null || teacher == '') {
+						layer.msg('讲师姓名不能为空', {icon: 0});
+					} else {
+						if (!reg.test(teacher)) {
+							layer.msg('讲师姓名格式不对，讲师姓名为2-10位汉字', {icon: 2});
+						}
+					}
+				});
+				$("#classname").blur(function() {
+					var classname = $("#classname").val();
+					var reg = /^[0-9a-zA-Z]{2,10}$/; //正则表达式
+					if (classname.length == 0 || classname == null || classname == '') {
+						layer.msg('账单ID不能为空', {icon: 0});
+					}else {
+						if (!reg.test(classname)) {
+							layer.msg('ID格式不对，ID为字母和数字组合', {icon: 2});
+						}
+					}
+				});
+				$("#classa").blur(function() {
+					var classa = $("#classa").val();
+					var reg = /^[\u4e00-\u9fa5]{2,10}$/; //正则表达式
+					if (classa.length == 0 || classa == null || classa == '') {
+						layer.msg('课程名不能为空', {icon: 0});
+					}
+				});
+				$("#man").blur(function() {
+					var man = $("#man").val();
+					var reg = /^[\u4e00-\u9fa5]{2,10}$/;//正则表达式
+					if (man.length == 0 || man == null || man == '') {
+						layer.msg('收款人不能为空', {icon: 0});
+					}else {
+						if (!reg.test(man)) {
+							layer.msg('收款人格式不对', {icon: 2});
+						}
+					}
+				});
+				$("#time").blur(function() {
+					var time = $("#time").val();
+					var reg = /^[0-9.]{1,10}$/; //正则表达式
+					if (time.length == 0 || time == null || time == '') {
+						layer.msg('收入金额不能为空', {icon: 0});
+					}else {
+						if (!reg.test(time)) {
+							layer.msg('收入金额格式不对', {icon: 2});
+						}
+					}
+				});
+				layui.use(['form', 'layer'], function() {
+				    var form = layui.form; 
+				    var layer = layui.layer; 
+				    $ = layui.$; 
+				    
+				    // 失焦时验证
+				    $("#birthday").blur(function() {
+				        var buyDate = $(this).val().trim();
+				        if (!buyDate) {
+				            layer.msg('收款日期不能为空', {icon: 0});
+				        }
+				    });
+				    
+				    // 提交表单时验证
+				    form.on('submit(saveBtn)', function(data) {
+				        var buyDate = $("#birthday").val().trim();
+				        if (!buyDate) {
+				            layer.msg('收款日期不能为空', {icon: 0});
+				            return false; // 阻止表单提交
+				        }
+				    });
+				});
+			});
+		
+			layui.use(['form'], function() {
+				var form = layui.form;
+				  layer = layui.layer;
+				    $ = layui.$;
+		
+				//监听表单提交：确认保存按钮，提交按钮的lay-filter="saveBtn"
+				form.on('submit(saveBtn)', function(data) {
+					var index = layer.alert(JSON.stringify(data.field), {
+						title: '最终的提交信息'
+					}, function() {
+						// 关闭弹出层
+						layer.close(index);
+		
+						var iframeIndex = parent.layer.getFrameIndex(window.name);
+						parent.layer.close(iframeIndex);
+		
+					});
+					return false;
+				});
+		
+			});
+		
+		</script>
+		<script>
+		  layui.use(function(){
+			  // 获取laydate
+		    var laydate = layui.laydate;
+		    // 渲染
+		    laydate.render({
+		      elem: '#birthday' // 出生日期文本框的id
+		    });
+		    // 正文显示
+		    laydate.render({
+		      elem: '#createDate', // 创建日期文本框的id
+		      lang: 'cn' // 日历显示语言为中文
+		    });
+			// 年月
+			laydate.render({
+			    elem: '#ID-laydate-type-month',
+			    type: 'month'
+			  });
+			  
+		  });
+		</script>
+	</body>
+</html>

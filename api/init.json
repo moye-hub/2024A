@@ -1,0 +1,215 @@
+{
+  "homeInfo": {
+    "title": "首页",
+    "href": "page/home.html"
+  },
+  "logoInfo": {
+    "title": "健身房管理系统",
+    "image": "images/picture1.png",
+    "href": ""
+  },
+  "menuInfo": [
+    {
+      "title": "常规管理",
+      "icon": "fa fa-address-book",
+      "href": "",
+      "target": "_self",
+      "child": [
+        {
+          "title": "首页",
+          "href": "page/home.html",
+          "icon": "fa fa-home",
+          "target": "_self"
+        },
+        {
+          "title": "用户管理",
+          "href": "",
+          "icon": "fa fa-group",
+          "target": "_self",
+          "child": [
+          {
+            "title": "添加用户",
+            "href": "user/adduser.html",
+            "icon": "fa fa-plus-square-o",
+            "target": "_self"
+          }, {
+            "title": "查询用户",
+            "href": "user/manageuser.html",
+            "icon": "fa fa-search",
+            "target": "_self"
+          }
+        ]
+        },
+        {
+          "title": "成员管理",
+          "href": "",
+          "icon": "fa fa-child",
+          "target": "_self",
+          "child": [
+            {
+              "title": "添加成员",
+              "href": "member/addMember.html",
+              "icon": "fa fa-plus-circle",
+              "target": "_self"
+            }, {
+              "title": "查询成员",
+              "href": "member/manageMember.html",
+              "icon": "fa fa-search-plus",
+              "target": "_self"
+            }, {
+              "title": "成员统计",
+              "href": "member/statiMember.html",
+              "icon": "fa fa-pie-chart",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "教练管理",
+          "href": "",
+          "icon": "fa fa-user-secret",
+          "target": "_self",
+          "child": [
+            {
+              "title": "添加教练",
+              "href": "instructor/addInstructor.html",
+              "icon": "fa fa-plus-square-o",
+              "target": "_self"
+            }, {
+              "title": "查询教练信息",
+              "href": "instructor/manageInstructor.html",
+              "icon": "fa fa-search",
+              "target": "_self"
+            },{
+              "title": "教练统计",
+              "href": "instructor/statiInstructor.html",
+              "icon": "fa fa-bar-chart",
+              "target": "_self"
+            }
+          ]
+        },
+		{
+		  "title": "课程管理",
+		  "href": "",
+		  "icon": "fa fa-codepen",
+		  "target": "_self",
+		  "child": [
+		    {
+		      "title": "添加课程",
+		      "href": "course/addCourse.html",
+		      "icon": "fa fa-plus-circle",
+		      "target": "_self"
+		    }, {
+		      "title": "查询课程",
+		      "href": "course/manageCourse.html",
+		      "icon": "fa fa-search-plus",
+		      "target": "_self"
+		    }, {
+		      "title": "课程评分",
+		      "href": "course/evaluatCourse.html",
+		      "icon": "fa fa-check-square-o",
+		      "target": "_self"
+		    }
+		  ]
+		},
+		{
+		  "title": "器材管理",
+		  "href": "",
+		  "icon": "fa fa-dribbble",
+		  "target": "_self",
+		  "child": [
+		    {
+		      "title": "添加器材",
+		      "href": "equipment/addEquipment.html",
+		      "icon": "fa fa-plus-circle",
+		      "target": "_self"
+		    }, {
+		      "title": "查询器材",
+		      "href": "equipment/manageEquipment.html",
+		      "icon": "fa fa-search-plus",
+		      "target": "_self"
+		    }, {
+		      "title": "器材借用",
+		      "href": "equipment/rentingEquipment.html",
+		      "icon": "fa fa-reply",
+		      "target": "_self"
+		    }
+		  ]
+		},
+		{
+		  "title": "预约管理",
+		  "href": "",
+		  "icon": "fa fa-check-square",
+		  "target": "_self",
+		  "child": [
+		    {
+		      "title": "添加预约",
+		      "href": "booking/addBooking.html",
+		      "icon": "fa fa-plus-circle",
+		      "target": "_self"
+		    }, {
+		      "title": "查询预约",
+		      "href": "booking/manageBooking.html",
+		      "icon": "fa fa-search-plus",
+		      "target": "_self"
+		    }, {
+		      "title": "预约统计",
+		      "href": "booking/statiBooking.html",
+		      "icon": "fa fa-area-chart",
+		      "target": "_self"
+		    }
+		  ]
+		},
+		{
+		  "title": "场地管理",
+		  "href": "",
+		  "icon": "fa fa-home",
+		  "target": "_self",
+		  "child": [
+		    {
+		      "title": "添加场地",
+		      "href": "space/addSpace.html",
+		      "icon": "fa fa-plus-circle",
+		      "target": "_self"
+		    }, {
+		      "title": "查询场地",
+		      "href": "space/manageSpace.html",
+		      "icon": "fa fa-search-plus",
+		      "target": "_self"
+		    }, {
+		      "title": "场地清理",
+		      "href": "space/cleanSpace.html",
+		      "icon": "fa fa-magic",
+		      "target": "_self"
+		    }
+		  ]
+		},
+        {
+          "title": "收支管理",
+          "href": "",
+          "icon": "fa fa-cubes",
+          "target": "_self",
+          "child": [
+            {
+              "title": "添加收支",
+              "href": "cash/addCash.html",
+              "icon": "fa fa-plus-square-o",
+              "target": "_self"
+            }, {
+              "title": "查询收支",
+              "href": "cash/manageCash.html",
+              "icon": "fa fa-search",
+              "target": "_self"
+            },
+			{
+			  "title": "收支统计",
+			  "href": "cash/statiCash.html",
+			  "icon": "fa fa-bar-chart",
+			  "target": "_self"
+			}
+          ]
+        }
+      ]
+    }
+  ]
+}

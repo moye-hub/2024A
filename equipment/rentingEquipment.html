@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>器材借用</title>
+  <link href="../css/layui.css" rel="stylesheet">
+  <style>
+    .required::before {
+      content: "*";
+      color: #ff0000;
+      margin-right: 4px;
+      font-weight: bold;                
+    }
+
+    #name {
+      margin-bottom: 20px; 
+    }
+
+    #ID-transfer-showSearch {
+      margin-bottom: 20px;
+    }
+	#btna{
+		margin-left: 190px;
+	}
+  </style>
+</head>
+<body>
+<div class="layui-container">
+  <div class="layui-row">
+    <div class="layui-form">
+      <!-- 借用人和穿梭框所在行 -->
+      <div class="layui-form-item">
+        <label class="layui-form-label required" style="width: auto;">借用人</label>
+        <div class="layui-input-inline" style="width: 400px;">
+          <input id="name" type="text" name="name" class="layui-input" lay-verify="required"
+                 lay-reqtext="借用人不能为空!" placeholder="请输入借用人">
+        </div>
+        
+        <div class="layui-input-inline" style="width: calc(100% - 240px);font-weight: bold;">
+          <div id="ID-transfer-showSearch"></div>
+          <div class="layui-form-item">
+            <div class="layui-input-block" id="btna">
+              <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认借用</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/layui.js"></script>
+<script>
+layui.use(function(){
+  var transfer = layui.transfer;
+  // 数据
+  var data = [
+    {"value": "1", "title": "瑜伽球01"},
+    {"value": "2", "title": "动感单车01"},
+    {"value": "3", "title": "瑜伽球02"},
+    {"value": "4", "title": "哑铃01"},
+    {"value": "5", "title": "哑铃02(损坏)", "disabled": true},
+    {"value": "6", "title": "动感单车02"},
+    {"value": "7", "title": "跑步机B"},
+    {"value": "8", "title": "跑步机A"},
+    {"value": "9", "title": "瑜伽球03"}
+  ];
+  // 渲染
+  transfer.render({
+    elem: '#ID-transfer-showSearch',
+    data: data,
+    title: ['健身器材', '用户'],
+    showSearch: true
+  });
+});
+layui.use(['form'], function() {
+				var form = layui.form;
+				  layer = layui.layer;
+				    $ = layui.$;
+
+				//监听表单提交：确认保存按钮，提交按钮的lay-filter="saveBtn"
+				form.on('submit(saveBtn)', function(data) {
+					var index = layer.alert(JSON.stringify(data.field), {
+						title: '最终的提交信息'
+					}, function() {
+						// 关闭弹出层
+						layer.close(index);
+
+						var iframeIndex = parent.layer.getFrameIndex(window.name);
+						parent.layer.close(iframeIndex);
+
+					});
+					return false;
+				});
+
+			});
+
+</script>
+</body>
+</html>

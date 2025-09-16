@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>添加收入</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="stylesheet" href="../lib/layui-v2.6.3/css/layui.css">
+		<style>
+			.required::before {
+				content: "*";
+				color: #ff0000;
+				margin-right: 4px;
+				font-weight: bold;				
+			}
+		</style>
+	</head>
+	<body>
+		<fieldset class="layui-elem-field layui-field-title">
+			<legend style="font-weight: bold;">添加收入</legend>
+		</fieldset>
+		<div class="layui-form" lay-filter="incomeForm">
+			<div class="layui-form-item">
+				<label class="layui-form-label required">账单ID</label>
+				<div class="layui-input-block">
+				<input id="billId" type="text" name="billId" class="layui-input" lay-verify="required"
+					lay-reqtext="账单ID不能为空!" placeholder="请输入账单ID">
+					</div>
+			</div>
+			
+			<div class="layui-form-item">
+				<label class="layui-form-label required">付款人</label>
+				<div class="layui-input-block">
+				<input id="payer" type="text" name="payer" class="layui-input" lay-verify="required"
+					lay-reqtext="付款人不能为空!" placeholder="请输入付款人">
+					</div>
+			</div>
+			
+			<div class="layui-form-item">
+				<label class="layui-form-label required">收款课程</label>
+				<div class="layui-input-block">
+				<input id="course" type="text" name="course" class="layui-input" lay-verify="required"
+					lay-reqtext="收款课程不能为空!" placeholder="请输入收款课程">
+					</div>
+			</div>
+			
+			<div class="layui-form-item">
+				<label class="layui-form-label required">收入类型</label>
+				<div class="layui-input-block">
+					<select id="incomeType" name="incomeType" lay-verify="required">
+						<option value="">请选择收入类型</option>
+						<option value="1">会员费</option>
+						<option value="2">私教课费</option>
+						<option value="3">小班课费</option>
+						<option value="4">器材租赁费</option>
+						<option value="5">其他</option>
+					</select>
+				</div>
+			</div>
+			
+			<div class="layui-form-item">
+				<label class="layui-form-label required">收入金额</label>
+				<div class="layui-input-block">
+				<input id="amount" type="text" name="amount" class="layui-input" lay-verify="required"
+					lay-reqtext="收入金额不能为空!" placeholder="请输入收入金额">
+					</div>
+			</div>
+			
+			<div class="layui-form-item">
+				<label class="layui-form-label required">付款方式</label>
+				<div class="layui-input-block">
+					<select id="paymentMethod" name="paymentMethod" lay-verify="required">
+						<option value="">请选择付款方式</option>
+						<option value="1">微信</option>
+						<option value="2">支付宝</option>
+						<option value="3">银行卡</option>
+						<option value="4">现金</option>
+					</select>
+				</div>
+			</div>
+			
+			<div class="layui-form-item">
+			    <label class="layui-form-label required">收款日期</label>
+			    <div class="layui-input-block" style="width: 1425px;">
+			      <input type="text" class="layui-input" id="receiveDate" name="receiveDate" placeholder="yyyy-MM-dd">
+			    </div>
+			  </div>
+			  
+			<div class="layui-form-item">
+				<label class="layui-form-label required">课程等级</label>
+				<div class="layui-input-block">
+					<input type="radio" name="courseLevel" value="新手" title="新手" checked="">
+					<input type="radio" name="courseLevel" value="进阶" title="进阶">
+					<input type="radio" name="courseLevel" value="专业" title="专业">
+				</div>
+			</div>
+			
+			<div class="layui-form-item">
+			   <label class="layui-form-label required">状态</label>
+			   <div class="layui-input-block">
+			       <input type="checkbox" name="status" lay-skin="switch" lay-filter="switchTest" lay-text="已收款|未收款" checked>
+			   </div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">备注</label>
+				<div class="layui-input-block">
+					<textarea name="remark" class="layui-textarea" placeholder="请输入备注"></textarea>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认提交</button>
+				</div>
+			</div>
+		</div>	
+		<script src="../lib/layui-v2.6.3/layui.js"></script>
+		<script>
+			layui.use(['form', 'layer', 'laydate'], function() {
+				var form = layui.form;
+				var layer = layui.layer;
+				var laydate = layui.laydate;
+				$ = layui.$;
+
+				// 日期选择器渲染
+				laydate.render({
+					elem: '#receiveDate',
+					format: 'yyyy-MM-dd',
+					lang: 'cn'
+				});
+
+				// 全量表单校验函数
+				function validateIncomeForm() {
+					var billId = $('#billId').val().trim();
+					if (!billId) {
+						layer.msg('账单ID不能为空', { icon: 5 });
+						$('#billId').focus();
+						return false;
+					}
+					if (!/^[0-9a-zA-Z]{2,10}$/.test(billId)) {
+						layer.msg('ID格式不对，应为2-10位字母和数字组合', { icon: 2 });
+						$('#billId').focus();
+						return false;
+					}
+
+					var payer = $('#payer').val().trim();
+					if (!payer) {
+						layer.msg('付款人不能为空', { icon: 5 });
+						$('#payer').focus();
+						return false;
+					}
+					if (!/^[\u4e00-\u9fa5]{2,10}$/.test(payer)) {
+						layer.msg('付款人格式不对，应为2-10位汉字', { icon: 2 });
+						$('#payer').focus();
+						return false;
+					}
+
+					var course = $('#course').val().trim();
+					if (!course) {
+						layer.msg('收款课程不能为空', { icon: 5 });
+						$('#course').focus();
+						return false;
+					}
+					if (!/^[\u4e00-\u9fa5]{2,10}$/.test(course)) {
+						layer.msg('课程名格式不对，应为2-10位汉字', { icon: 2 });
+						$('#course').focus();
+						return false;
+					}
+
+					var incomeType = $('#incomeType').val().trim();
+					if (!incomeType) {
+						layer.msg('请选择收入类型', { icon: 5 });
+						$('#incomeType').focus();
+						return false;
+					}
+
+					var amount = $('#amount').val().trim();
+					if (!amount) {
+						layer.msg('收入金额不能为空', { icon: 5 });
+						$('#amount').focus();
+						return false;
+					}
+					if (!/^[0-9]+(\.[0-9]{1,2})?$/.test(amount) || parseFloat(amount) <= 0) {
+						layer.msg('收入金额格式不对，应为正数，最多两位小数', { icon: 2 });
+						$('#amount').focus();
+						return false;
+					}
+
+					var paymentMethod = $('#paymentMethod').val().trim();
+					if (!paymentMethod) {
+						layer.msg('请选择付款方式', { icon: 5 });
+						$('#paymentMethod').focus();
+						return false;
+					}
+
+					var receiveDate = $('#receiveDate').val().trim();
+					if (!receiveDate) {
+						layer.msg('收款日期不能为空', { icon: 5 });
+						$('#receiveDate').focus();
+						return false;
+					}
+					if (!/^\d{4}-\d{2}-\d{2}$/.test(receiveDate)) {
+						layer.msg('收款日期格式不对，应为yyyy-MM-dd', { icon: 2 });
+						$('#receiveDate').focus();
+						return false;
+					}
+
+					return true;
+				}
+
+				$("#billId").blur(function() {
+					var billId = $(this).val().trim();
+					if (!billId) {
+						layer.msg('账单ID不能为空', { icon: 5 });
+					} else if (!/^[0-9a-zA-Z]{2,10}$/.test(billId)) {
+						layer.msg('ID格式不对，应为2-10位字母和数字组合', { icon: 2 });
+					}
+				});
+
+				$("#payer").blur(function() {
+					var payer = $(this).val().trim();
+					if (!payer) {
+						layer.msg('付款人不能为空', { icon: 5 });
+					} else if (!/^[\u4e00-\u9fa5]{2,10}$/.test(payer)) {
+						layer.msg('付款人格式不对，应为2-10位汉字', { icon: 2 });
+					}
+				});
+
+				$("#course").blur(function() {
+					var course = $(this).val().trim();
+					if (!course) {
+						layer.msg('收款课程不能为空', { icon: 5 });
+					} else if (!/^[\u4e00-\u9fa5]{2,10}$/.test(course)) {
+						layer.msg('课程名格式不对，应为2-10位汉字', { icon: 2 });
+					}
+				});
+
+				$("#incomeType").blur(function() {
+					if (!$(this).val().trim()) {
+						layer.msg('请选择收入类型', { icon: 5 });
+					}
+				});
+
+				$("#amount").blur(function() {
+					var amount = $(this).val().trim();
+					if (!amount) {
+						layer.msg('收入金额不能为空', { icon: 5 });
+					} else if (!/^[0-9]+(\.[0-9]{1,2})?$/.test(amount) || parseFloat(amount) <= 0) {
+						layer.msg('收入金额格式不对，应为正数，最多两位小数', { icon: 2 });
+					}
+				});
+
+				$("#paymentMethod").blur(function() {
+					if (!$(this).val().trim()) {
+						layer.msg('请选择付款方式', { icon: 5 });
+					}
+				});
+
+				$("#receiveDate").blur(function() {
+					var receiveDate = $(this).val().trim();
+					if (!receiveDate) {
+						layer.msg('收款日期不能为空', { icon: 5 });
+					} else if (!/^\d{4}-\d{2}-\d{2}$/.test(receiveDate)) {
+						layer.msg('收款日期格式不对，应为yyyy-MM-dd', { icon: 2 });
+					}
+				});
+
+				// 表单提交事件
+				form.on('submit(saveBtn)', function(data) {
+					if (!validateIncomeForm()) {
+						return false;
+					}
+
+					var index = layer.alert(JSON.stringify(data.field, null, 2), {
+						title: '收入信息提交成功',
+						area: ['600px', '550px'],
+						icon: 1
+					}, function() {
+						layer.close(index);
+						var iframeIndex = parent.layer.getFrameIndex(window.name);
+						parent.layer.close(iframeIndex);
+						parent.location.reload();
+					});
+
+					return false;
+				});
+
+				form.render();
+			});
+		</script>
+	</body>
+</html>
+    

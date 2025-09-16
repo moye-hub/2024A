@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>添加预约</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <link rel="stylesheet" href="../lib/layui-v2.6.3/css/layui.css" media="all">
+     
+    <style>
+        /* 红色星号前缀样式 */
+        .required::before {
+            content: "*";
+            color: #ff0000;
+            margin-right: 4px;
+            font-weight: bold;                
+        }
+    </style>
+</head>
+<body>
+    <!-- 网页标题 -->
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend style="font-weight: bold;">添加预约</legend>
+    </fieldset>
+
+    <div class="layui-form" lay-filter="bookingForm">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">预约课程名</label>
+            <div class="layui-input-block">
+                <input id="classname" type="text" name="classname" class="layui-input" lay-verify="required"
+                    lay-reqtext="预约课程名称不能为空!" placeholder="请输入预约课程名称">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">课程讲师</label>
+            <div class="layui-input-block">
+                <input id="teacher" type="text" name="teacher" class="layui-input" lay-verify="required"
+                    lay-reqtext="讲师名不能为空!" placeholder="请输入讲师名">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">课程类型</label>
+            <div class="layui-input-block">
+                <select id="classType" name="classType" lay-verify="required">
+                    <option value="">请选择课程类型</option>
+                    <option value="1">团课</option>
+                    <option value="2">私教课</option>
+                    <option value="3">小班课</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">课程等级</label>
+            <div class="layui-input-block">
+                <input type="radio" name="level" value="新手" title="新手" checked>
+                <input type="radio" name="level" value="进阶" title="进阶">
+                <input type="radio" name="level" value="专业" title="专业">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">预约日期</label>
+            <div class="layui-input-block">
+                <input id="bookDate" type="text" name="bookDate" class="layui-input" lay-verify="required"
+                    lay-reqtext="预约日期不能为空!" placeholder="请输入预约日期">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">预约时间</label>
+            <div class="layui-input-block">
+                <input id="bookTime" type="text" name="bookTime" class="layui-input" lay-verify="required"
+                    lay-reqtext="预约时间不能为空!" placeholder="请输入预约时间">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">上课场地</label>
+            <div class="layui-input-block">
+                <input id="classPlace" type="text" name="classPlace" class="layui-input"
+                    placeholder="请输入上课场地（私教课可选）">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">上课时长</label>
+            <div class="layui-input-block">
+                <input id="classDuration" type="text" name="classDuration" class="layui-input"
+                    placeholder="请输入上课时长（默认为分钟私教课可选）">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+           <label class="layui-form-label required">预约状态</label>
+           <div class="layui-input-block">
+               <input type="checkbox" name="status" lay-skin="switch" lay-filter="switchTest" lay-text="预约|取消" checked>
+           </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea name="remark" class="layui-textarea" placeholder="请输入备注信息"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认预约</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+    <script>
+        layui.use(['form', 'layer'], function() {
+            var form = layui.form;
+            var layer = layui.layer;
+            $ = layui.$;
+
+            function validateBookingForm() {
+                var classname = $('#classname').val().trim();
+                if (!classname) {
+                    layer.msg('预约课程名称不能为空', { icon: 5 });
+                    $('#classname').focus();
+                    return false;
+                }
+                if (!/^[\u4e00-\u9fa5a-zA-Z]{2,10}$/.test(classname)) {
+                    layer.msg('课程名需为2-10位汉字和字母组合', { icon: 2 });
+                    $('#classname').focus();
+                    return false;
+                }
+
+                var teacher = $('#teacher').val().trim();
+                if (!teacher) {
+                    layer.msg('讲师名不能为空', { icon: 5 });
+                    $('#teacher').focus();
+                    return false;
+                }
+                if (!/^[\u4e00-\u9fa5]{2,10}$/.test(teacher)) {
+                    layer.msg('讲师姓名需为2-10位汉字', { icon: 2 });
+                    $('#teacher').focus();
+                    return false;
+                }
+
+                var classType = $('#classType').val().trim();
+                if (!classType) {
+                    layer.msg('请选择课程类型', { icon: 5 });
+                    $('#classType').focus();
+                    return false;
+                }
+
+                var bookDate = $('#bookDate').val().trim();
+                if (!bookDate) {
+                    layer.msg('预约日期不能为空', { icon: 5 });
+                    $('#bookDate').focus();
+                    return false;
+                }
+                if (!/^\d{4}-\d{2}-\d{2}$/.test(bookDate)) {
+                    layer.msg('日期格式需为yyyy-mm-dd（如：2024-05-20）', { icon: 2 });
+                    $('#bookDate').focus();
+                    return false;
+                }
+
+                var bookTime = $('#bookTime').val().trim();
+                if (!bookTime) {
+                    layer.msg('预约时间不能为空', { icon: 5 });
+                    $('#bookTime').focus();
+                    return false;
+                }
+                if (!/^([01][0-9]|2[0-3]):[0-5][0-9]$/.test(bookTime)) {
+                    layer.msg('时间格式需为hh:mm', { icon: 2 });
+                    $('#bookTime').focus();
+                    return false;
+                }
+
+                var classDuration = $('#classDuration').val().trim();
+                if (classDuration && !/^[0-9]{1,3}$/.test(classDuration)) {
+                    layer.msg('上课时长需为数字', { icon: 2 });
+                    $('#classDuration').focus();
+                    return false;
+                }
+
+                return true;
+            }
+
+            $("#classname").blur(function() {
+                var classname = $(this).val().trim();
+                if (!classname) {
+                    layer.msg('预约课程名称不能为空', { icon: 5 });
+                } else if (!/^[\u4e00-\u9fa5a-zA-Z]{2,10}$/.test(classname)) {
+                    layer.msg('课程名需为2-10位汉字和字母组合', { icon: 2 });
+                }
+            });
+
+            $("#teacher").blur(function() {
+                var teacher = $(this).val().trim();
+                if (!teacher) {
+                    layer.msg('讲师名不能为空', { icon: 5 });
+                } else if (!/^[\u4e00-\u9fa5]{2,10}$/.test(teacher)) {
+                    layer.msg('讲师姓名需为2-10位汉字', { icon: 2 });
+                }
+            });
+
+            $("#classType").blur(function() {
+                var classType = $(this).val().trim();
+                if (!classType) {
+                    layer.msg('请选择课程类型', { icon: 5 });
+                }
+            });
+
+            $("#bookDate").blur(function() {
+                var bookDate = $(this).val().trim();
+                if (!bookDate) {
+                    layer.msg('预约日期不能为空', { icon: 5 });
+                } else if (!/^\d{4}-\d{2}-\d{2}$/.test(bookDate)) {
+                    layer.msg('日期格式需为yyyy-mm-dd', { icon: 2 });
+                }
+            });
+
+            $("#bookTime").blur(function() {
+                var bookTime = $(this).val().trim();
+                if (!bookTime) {
+                    layer.msg('预约时间不能为空', { icon: 5 });
+                } else if (!/^([01][0-9]|2[0-3]):[0-5][0-9]$/.test(bookTime)) {
+                    layer.msg('时间格式需为hh:mm', { icon: 2 });
+                }
+            });
+
+            $("#classDuration").blur(function() {
+                var classDuration = $(this).val().trim();
+                if (classDuration && !/^[0-9]{1,3}$/.test(classDuration)) {
+                    layer.msg('上课时长格式需为数字', { icon: 2 });
+                }
+            });
+
+            form.on('submit(saveBtn)', function(data) {
+                // 提交前先执行全量校验，格式错误则阻止提交
+                if (!validateBookingForm()) {
+                    return false;
+                }
+
+                // 校验通过，弹出最终提交信息（格式化JSON，便于查看）
+                var index = layer.alert(JSON.stringify(data.field, null, 2), {
+                    title: '预约信息提交成功',
+                    area: ['600px', '500px'], // 适配多字段显示
+                    icon: 1 // 成功图标，提升体验
+                }, function() {
+                    // 关闭弹窗后，关闭iframe并刷新父页面（嵌入场景）
+                    layer.close(index);
+                    var iframeIndex = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(iframeIndex);
+                    parent.location.reload();
+                });
+
+                return false; // 阻止表单默认跳转
+            });
+
+            // 渲染表单组件（确保下拉框、开关等样式正常）
+            form.render();
+        });
+    </script>
+</body>
+</html>

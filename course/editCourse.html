@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>修改课程</title>
+		<link rel="stylesheet" href="../lib/layui-v2.6.3/css/layui.css">
+		<style>
+			.required::before {
+				content: "*";
+				color: #ff0000;
+				margin-right: 4px;
+				font-weight: bold;				
+			}
+		</style>
+	</head>
+	<body>
+		<fieldset class="layui-elem-field layui-field-title">
+			<legend style="font-weight: bold;">修改课程</legend>
+		</fieldset>
+		<div class="layui-form" lay-filter="courseForm">
+			<!-- 课程名称 -->
+			<div class="layui-form-item">
+				<label class="layui-form-label required">课程名称</label>
+				<div class="layui-input-block">
+					<input id="username" type="text" name="username" class="layui-input" lay-verify="required"
+						lay-reqtext="课程名称不能为空!" placeholder="请输入课程名称" value="基础瑜伽课">
+				</div>
+			</div>
+			
+			<!-- 课程类型（补充ID用于验证） -->
+			<div class="layui-form-item">
+				<label class="layui-form-label required">课程类型</label>
+				<div class="layui-input-block">
+					<select id="courseType" lay-verify="required">
+						<option value="">请选择课程类型</option>
+						<option value="1" selected>团课</option>
+						<option value="2">私教课</option>
+						<option value="3">小班课</option>
+					</select>
+				</div>
+			</div>
+			
+			<!-- 适合人群（补充name标识用于验证） -->
+			<div class="layui-form-item">
+				<label class="layui-form-label required">适合人群</label>
+				<div class="layui-input-block">
+					<input type="radio" name="people" value="新手" title="新手" checked>
+					<input type="radio" name="people" value="进阶" title="进阶">
+					<input type="radio" name="people" value="专业" title="专业">
+				</div>
+			</div>
+			
+			<!-- 课程讲师 -->
+			<div class="layui-form-item">
+				<label class="layui-form-label required">课程讲师</label>
+				<div class="layui-input-block">
+					<input id="teacher" type="text" name="teacher" class="layui-input" lay-verify="required"
+						lay-reqtext="讲师名不能为空!" placeholder="请输入讲师名" value="张三">
+				</div>
+			</div>
+
+			<!-- 上课场地 -->
+			<div class="layui-form-item">
+				<label class="layui-form-label required">上课场地</label>
+				<div class="layui-input-block">
+				   <input id="place" type="text" name="place" class="layui-input" lay-verify="required"
+					lay-reqtext="场地不能为空!" placeholder="请输入上课场地" value="瑜伽室A">
+				</div>
+			</div>
+			
+			<!-- 课程时长 -->
+			<div class="layui-form-item">
+				<label class="layui-form-label required">课程时长</label>
+				<div class="layui-input-block">
+				   <input id="time" type="text" name="time" class="layui-input" lay-verify="required"
+				   	lay-reqtext="课程时长不能为空!" placeholder="请输入课程时长" value="60">
+				</div>
+			</div>
+			
+			<!-- 所需器材 -->
+			<div class="layui-form-item">
+				<label class="layui-form-label required">所需器材</label>
+				<div class="layui-input-block">
+				   <input id="tool" type="text" name="tool" class="layui-input" lay-verify="required"
+				   	lay-reqtext="所需器材不能为空!" placeholder="请输入所需器材" value="瑜伽球">
+				</div>
+			</div>
+			
+			<!-- 状态开关（默认设置为“开课”状态） -->
+			<div class="layui-form-item">
+			   <label class="layui-form-label required">状态</label>
+			   <div class="layui-input-block">
+			       <input type="checkbox" name="status" lay-skin="switch" lay-filter="switchTest" lay-text="开课|停课" checked>
+			   </div>
+			</div>
+			
+			<!-- 课程简介（非必填） -->
+			<div class="layui-form-item">
+				<label class="layui-form-label">课程简介</label>
+				<div class="layui-input-block">
+					<textarea name="remark" class="layui-textarea" placeholder="请输入课程详细介绍（可选）"></textarea>
+				</div>
+			</div> 
+			
+			<!-- 提交按钮 -->
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+				</div>
+			</div>
+		</div>	
+		<script src="../lib/layui-v2.6.3/layui.js"></script>
+		<script>
+			// 合并模块加载，避免重复加载form和layer
+			layui.use(['form', 'layer'], function() {
+				var form = layui.form; 
+				var layer = layui.layer; 
+				$ = layui.$; 
+
+				// ===================== 1. 失去焦点实时验证（提升用户体验） =====================
+				// 1.1 课程名称验证（2-10位汉字/字母）
+				$("#username").blur(function() {
+					var val = $(this).val().trim();
+					var reg = /^[\u4e00-\u9fa5a-zA-Z]{2,10}$/;
+					if (!val) {
+						layer.msg('课程名称不能为空', {icon: 0, time: 1500});
+					} else if (!reg.test(val)) {
+						layer.msg('课程名称需为2-10位汉字/字母组合', {icon: 2, time: 1500});
+					}
+				});
+
+				// 1.2 课程类型验证（必须选择）
+				$("#courseType").blur(function() {
+					var val = $(this).val().trim();
+					if (!val) {
+						layer.msg('请选择课程类型', {icon: 0, time: 1500});
+					}
+				});
+
+				// 1.3 课程讲师验证（2-10位纯汉字）
+				$("#teacher").blur(function() {
+					var val = $(this).val().trim();
+					var reg = /^[\u4e00-\u9fa5]{2,10}$/;
+					if (!val) {
+						layer.msg('讲师姓名不能为空', {icon: 0, time: 1500});
+					} else if (!reg.test(val)) {
+						layer.msg('讲师姓名需为2-10位纯汉字', {icon: 2, time: 1500});
+					}
+				});
+
+				// 1.4 上课场地验证（2-10位汉字/字母）
+				$("#place").blur(function() {
+					var val = $(this).val().trim();
+					var reg = /^[\u4e00-\u9fa5a-zA-Z]{2,10}$/;
+					if (!val) {
+						layer.msg('上课场地不能为空', {icon: 0, time: 1500});
+					} else if (!reg.test(val)) {
+						layer.msg('场地需为2-10位汉字/字母组合', {icon: 2, time: 1500});
+					}
+				});
+
+				// 1.5 课程时长验证（1-5位纯数字）
+				$("#time").blur(function() {
+					var val = $(this).val().trim();
+					var reg = /^[0-9]{1,5}$/;
+					if (!val) {
+						layer.msg('课程时长不能为空', {icon: 0, time: 1500});
+					} else if (!reg.test(val)) {
+						layer.msg('时长需为1-5位纯数字（单位：分钟）', {icon: 2, time: 1500});
+					}
+				});
+
+				// 1.6 所需器材验证（2-10位汉字/字母）
+				$("#tool").blur(function() {
+					var val = $(this).val().trim();
+					var reg = /^[\u4e00-\u9fa5a-zA-Z]{2,10}$/;
+					if (!val) {
+						layer.msg('所需器材不能为空', {icon: 0, time: 1500});
+					} else if (!reg.test(val)) {
+						layer.msg('器材名需为2-10位汉字/字母组合', {icon: 2, time: 1500});
+					}
+				});
+
+				form.on('submit(saveBtn)', function(data) {
+					var isValid = true;
+					var errorMsg = '';
+
+					// 2.1 课程名称校验
+					var username = $("#username").val().trim();
+					var usernameReg = /^[\u4e00-\u9fa5a-zA-Z]{2,10}$/;
+					if (!username) {
+						isValid = false;
+						errorMsg = '课程名称不能为空';
+					} else if (!usernameReg.test(username)) {
+						isValid = false;
+						errorMsg = '课程名称需为2-10位汉字/字母组合';
+					}
+
+					// 2.2 课程类型校验（必须选择）
+					else if (!$("#courseType").val().trim()) {
+						isValid = false;
+						errorMsg = '请选择课程类型';
+					}
+
+					// 2.3 课程讲师校验
+					else if (!$("#teacher").val().trim()) {
+						isValid = false;
+						errorMsg = '讲师姓名不能为空';
+					} else if (!/^[\u4e00-\u9fa5]{2,10}$/.test($("#teacher").val().trim())) {
+						isValid = false;
+						errorMsg = '讲师姓名需为2-10位汉字';
+					}
+
+					// 2.4 上课场地校验
+					else if (!$("#place").val().trim()) {
+						isValid = false;
+						errorMsg = '上课场地不能为空';
+					} else if (!/^[\u4e00-\u9fa5a-zA-Z]{2,10}$/.test($("#place").val().trim())) {
+						isValid = false;
+						errorMsg = '场地需为2-10位汉字/字母组合';
+					}
+
+					// 2.5 课程时长校验
+					else if (!$("#time").val().trim()) {
+						isValid = false;
+						errorMsg = '课程时长不能为空';
+					} else if (!/^[0-9]{1,5}$/.test($("#time").val().trim())) {
+						isValid = false;
+						errorMsg = '时长需为1-5位数字';
+					}
+
+					// 2.6 所需器材校验
+					else if (!$("#tool").val().trim()) {
+						isValid = false;
+						errorMsg = '所需器材不能为空';
+					} else if (!/^[\u4e00-\u9fa5a-zA-Z]{2,10}$/.test($("#tool").val().trim())) {
+						isValid = false;
+						errorMsg = '器材名需为2-10位汉字/字母组合';
+					}
+
+					// 2.7 适合人群校验（确保有选中项，默认已选“新手”，防止手动取消）
+					else if (!$("input[name='people']:checked").val()) {
+						isValid = false;
+						errorMsg = '请选择适合人群（新手/进阶/专业）';
+					}
+
+					// ===================== 3. 验证结果处理 =====================
+					if (!isValid) {
+						layer.msg(errorMsg, {icon: 0, time: 2000});
+						return false; // 阻止表单提交
+					}
+
+					// 验证通过：显示提交信息（后续可对接AJAX提交到后端）
+					var index = layer.alert(JSON.stringify(data.field, null, 2), {
+						title: '课程提交信息确认',
+						area: ['500px', '400px'],
+						btn: ['确认提交', '取消'],
+						yes: function() {
+							// 此处可添加AJAX提交逻辑（示例）
+							/*
+							$.ajax({
+								url: '你的课程添加接口地址',
+								type: 'POST',
+								data: data.field,
+								dataType: 'json',
+								success: function(res) {
+									if (res.code === 0) {
+										layer.msg('课程添加成功', {icon: 1, time: 1500}, function() {
+											layer.close(index);
+											// 关闭当前弹窗（若为iframe嵌套）
+											var iframeIndex = parent.layer.getFrameIndex(window.name);
+											parent.layer.close(iframeIndex);
+											// 刷新父页面课程列表（可选）
+											parent.location.reload();
+										});
+									} else {
+										layer.msg(res.msg, {icon: 2});
+									}
+								},
+								error: function() {
+									layer.msg('网络错误，请重试', {icon: 2});
+								}
+							});
+							*/
+							// 测试用：仅关闭弹窗
+							layer.close(index);
+							var iframeIndex = parent.layer.getFrameIndex(window.name);
+							parent.layer.close(iframeIndex);
+						}
+					});
+
+					return false; // 阻止layui默认表单提交
+				});
+			});
+		</script>
+	</body>
+</html>

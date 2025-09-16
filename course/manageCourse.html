@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>课程信息</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="stylesheet" href="../lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="../css/layuimini.css" media="all">
+</head>
+<body>
+<div>	
+<fieldset class="table-search-fieldset">
+			<legend>搜索信息</legend>
+			<div style="margin: 10px 10px 10px 10px">
+				<form class="layui-form layui-form-pane" action="">
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">课程名</label>
+							<div class="layui-input-inline">
+								<input type="text" name="coursename" placeholder="请输入课程名" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">适合人群</label>
+							<div class="layui-input-inline">
+								<select >
+									<option value="1" selected>新手</option>
+									<option value="2">专业</option>
+									<option value="2">进阶</option>
+								</select>
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">讲师</label>
+							<div class="layui-input-inline">
+								<input type="text" name="teacher" placeholder="请输入讲师名" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">课程时长</label>
+							<div class="layui-input-inline">
+								<input type="text" name="time" placeholder="请输入课程时长" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+						
+						<div class="layui-inline">
+							<label class="layui-form-label required">课程类型</label>
+							<div class="layui-input-inline">
+								<select>
+									<option value="1">团课</option>
+									<option value="2">私教课</option>
+									<option value="3">小班课</option>
+								</select>
+							</div>
+						</div>
+						<div class="layui-inline">
+							<button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</fieldset>
+        <!-- 工具栏设置： 添加用户、批量删除，这里id的值由程序员自定-->
+		<script type="text/html" id="studentTableToolbar">
+			<div class="layui-btn-container">
+				<!-- 这里的lay-event="add"和delete在后面的JS代码中要用 -->
+				<button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加课程 </button>
+				<!-- <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 批量删除 </button> -->
+			</div>
+		</script> <!--工具栏设置结束-->
+
+       <!-- 数据表格定义，先隐藏起来，内容由后面的JS代码动态产生；lay-filter="studentTableFilter"在后面的JS代码里用 -->
+		<table class="layui-hide" id="studentTable" lay-filter="studentTableFilter"></table>
+
+		<!--用户状态列（看表格预览效果），id="userStatus"是程序员自定，后面JS中用-->
+		<script type="text/html" id="userStatus">
+			<input type="checkbox" name="status"  checked lay-skin="switch" lay-text="开课|停课" lay-event="open" lay-filter="modifystatus" {{ d.status == '1'? 'checked' : '' }}/>
+		</script>
+
+        <!-- 定义表格最后一列：操作 ；lay-event="detail"、 lay-event="edit"、lay-event="delete"后面JS会用到-->
+		<script type="text/html" id="studentTableOperation">
+			<a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="detail">查看详情</a>
+			<a class="layui-btn  layui-btn-xs data-count-edit" lay-event="edit">修改</a>
+			<a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+		</script>
+</div>
+<script src="../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script>
+	// 使用Layui的表单和表格模块
+	layui.use(['form', 'table'], function () {
+		var $ = layui.jquery;     // 获得jQuery
+			form = layui.form;    // 获得表单模块
+			table = layui.table;  // 获得表格模块
+			
+        //1、渲染表格，也就是设置表格
+		table.render({
+			elem: '#studentTable', // 复制要改！ 上面表格的id
+			url: 'course.json', // 复制要改！表格数据JSON文件的位置
+			toolbar: '#studentTableToolbar', // 复制要改！工具栏的id，上面定义的 ；不写的话工具栏不会出现
+			defaultToolbar: ['filter', 'exports', 'print', {
+				title: '提示',
+				layEvent: 'LAYTABLE_TIPS',
+				icon: 'layui-icon-tips'
+			}],
+			cols: [[ // 列定义，复制要改！
+				{type: "checkbox", width: 50},
+				{field: 'id', width: 80, title: 'ID', sort: true},
+				{field: 'coursename', width: 180, title: '课程名'},
+				{field: 'user', width: 100, title: '适合人群'},
+				{field: 'teacher', width: 100, title: '讲师'},
+				{field: 'kinds', width: 180, title: '课程类型'},
+				{field: 'time', width: 120, title: '课程时长'},
+				{
+					field : 'status',
+					width:150,
+					title : '课程状态',
+					templet : '#userStatus', // 上面用户状态列定义的id：userStatus
+					unresize : true,
+					align: "center"
+				},
+				{title: '操作', minWidth: 130, toolbar: '#studentTableOperation', align: "center"}
+			]],
+			limits: [10, 15, 20, 25, 50, 100], // 每页显示条数切换
+			limit: 15, // 每页默认显示15条数据
+			page: true, // 不写的话，分页显示不会显示
+			skin: 'line' // 表格有边框
+		});	 
+ 
+		/**
+		 * 2、toolbar监听事件（工具栏监听事件），就是：添加用户和批量删除；复制要改studentTableFilter！
+		 */
+		table.on('toolbar(studentTableFilter)', function (obj) {
+		    if (obj.event === 'add') {  // 监听添加操作，工具栏上的添加用户， lay-event="add"
+				var index = layer.open({
+					title: '添加课程', // 复制更改
+					type: 2,
+					shade: 0.2,
+					maxmin:true,
+					shadeClose: true,
+					area: ['100%', '100%'],
+					content: 'addCourse.html',// 复制要改！
+				});
+				$(window).on("resize", function () {
+					layer.full(index);
+				});
+			} else if (obj.event === 'delete') {  // 监听批量删除操作
+				var checkStatus = table.checkStatus('studentTable')
+						, data = checkStatus.data;
+				layer.alert(JSON.stringify(data));
+			}
+		});
+
+		//3、监听表格复选框选择
+		table.on('checkbox(studentTableFilter)', function (obj) {
+			console.log(obj); // 这里是简单的将信息输出，可看浏览器控制台
+		});
+         
+		// 4、监听表格最后一列的操作：也就是最后一列的3个按钮：查看详情、修改和删除
+		table.on('tool(studentTableFilter)', function (obj) {
+			var data = obj.data;
+			if(obj.event === 'detail'){
+				//layer.alert("查看详情");
+				var index = layer.open({
+					title: '查看详情',
+					type: 2,
+					shade: 0.2,
+					maxmin:true,
+					shadeClose: true,
+					area: ['100%', '100%'],
+					content: 'courseDetail.html', // 复制要改！
+				});
+				$(window).on("resize", function () {
+					layer.full(index);
+				});
+				return false;
+			} else if (obj.event == 'edit') {
+				var index = layer.open({
+					title: '编辑课程',
+					type: 2,
+					shade: 0.2,
+					maxmin:true,
+					shadeClose: true,
+					area: ['100%', '100%'],
+					content: 'editCourse.html',// 复制要改！
+				});
+				$(window).on("resize", function () {
+					layer.full(index);
+				});
+				return false;
+			} else if (obj.event == 'delete') {
+				layer.confirm('您确认删除吗？', {icon:3}, function (index) {
+					obj.del();
+					layer.close(index);
+				});
+			}
+		});
+
+	});
+</script>
+
+</body>
+</html>
