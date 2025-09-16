@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>查看详情</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="../css/public.css" media="all">
+
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form layuimini-form">
+    <div class="layui-form-item">
+        <label class="layui-form-label required">姓名</label>
+        <div class="layui-input-block" style="width: 620px;">
+            <input type="text" name="text" lay-verify="required" lay-reqtext="姓名不能为空" placeholder="请输入姓名" value="张三" class="layui-input" disabled>
+        </div>
+    </div>
+	<div class="layui-form-item">
+	    <label class="layui-form-label required">性别</label>
+	    <div class="layui-input-block" style="width: 620px;">
+	        <input type="radio" name="sex" value="男" title="男" checked="" lay-verify="required" lay-reqtext="性别不能为空" disabled readonly>
+	        <input type="radio" name="sex" value="女" title="女">
+	    </div>
+	</div>
+
+	<div class="layui-form-item">
+	    <label class="layui-form-label">加入日期</label>
+	    <div class="layui-input-block" style="width: 620px;">
+	      <input type="text" class="layui-input" id="birthday" placeholder="yyyy-MM-dd" disabled readonly>
+	    </div>
+	  </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">身份证号</label>
+            <div class="layui-input-block" style="width: 620px;">
+                <input id="userid" type="text" name="userid" placeholder="请输入身份证号" autocomplete="off" class="layui-input" lay-verify="required" lay-reqtext="身份证号" value="140564123657896" disabled readonly>
+            </div>
+    </div>
+	<div class="layui-form-item">
+	    <label class="layui-form-label required">年龄</label>
+	        <div class="layui-input-block" style="width: 620px;">
+	            <input id="useryear" type="text" name="useryear" placeholder="请输入年龄" autocomplete="off" class="layui-input" lay-verify="required" lay-reqtext="年龄" value="20" disabled readonly>
+	        </div>
+	</div>
+	<div class="layui-form-item">
+	    <label class="layui-form-label required">籍贯</label>
+	    <div class="layui-input-block" style="width: 620px;">
+	        <select lay-verify="required" disabled readonly>
+	            <option value="1" selected>山西太原</option>
+	            <option value="2">山西大同</option>
+	            <option value="3">河北沧州</option>
+	        </select>
+	    </div>
+	</div>
+	<div class="layui-form-item">
+	<label class="layui-form-label required">个人照片</label>
+	<button type="button" class="layui-btn layui-btn-danger" id="ID-upload-demo-size" disabled readonly>
+	  <i class="layui-icon layui-icon-upload"></i> 上传图片
+	</button>
+	<div class="layui-inline layui-word-aux">
+		不超过200kb
+	</div>
+		</div>
+	<div class="layui-form-item">
+	    <label class="layui-form-label required">擅长领域</label>
+	    <div class="layui-input-block" style="width: 620px;">
+	        <select lay-verify="required" disabled readonly>
+	           <option value="1" selected>力量训练</option>
+	           <option value="2">瑜伽</option>
+	           <option value="3">普拉提</option>
+	           <option value="4">动感单车</option>
+	           <option value="5">拳击</option>
+	        </select>
+	    </div>
+	</div>
+    
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">手机号</label>
+        <div class="layui-input-block" style="width: 620px;">
+            <input type="number" name="phone" lay-verify="required" lay-reqtext="手机号码不能为空" placeholder="请输入手机号码" value="13545678789" class="layui-input" disabled readonly>
+        </div>
+    </div>
+	<div class="layui-form-item">
+	    <label class="layui-form-label required">担任的职务</label>
+	        <div class="layui-input-block" style="width: 620px;">
+	            <input id="userjob" type="text" name="userjob" placeholder="请输入职务" autocomplete="off" class="layui-input" lay-verify="required" lay-reqtext="职务" value="总教练" disabled readonly>
+	        </div>
+	</div>
+	<div class="layui-form-item">
+	   <label class="layui-form-label">状态</label>
+	   <div class="layui-input-block">
+	       <input type="checkbox" name="status" lay-skin="switch" lay-filter="switchTest" lay-text="退出|正常" disabled readonly>
+	   </div>
+	</div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block" style="width: 620px;">
+            <textarea name="remark" class="layui-textarea" placeholder="请输入备注信息" disabled readonly></textarea>
+        </div>
+    </div>
+</div>
+<script src="../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            $ = layui.$;
+
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+            var index = layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            }, function () {
+
+                // 关闭弹出层
+                layer.close(index);
+
+                var iframeIndex = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(iframeIndex);
+
+            });
+
+            return false;
+        });
+
+    });
+
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+
+        var initYear;
+        // 年选择器 （入学年份）
+        laydate.render({
+            elem: '#year',
+            type: 'year',
+            /* ready和change函数是为了实现选择年份时不用点确定直接关闭  */
+            ready: function(date){ // 控件在打开时触发，回调返回一个参数：初始的日期时间对象
+                initYear = date.year;
+            },
+            change: function(value, date, endDate){ // 年月日时间被切换时都会触发。回调返回三个参数，分别代表：生成的值、日期时间对象、结束的日期时间对象
+                var selectYear = date.year;
+                var differ = selectYear-initYear;
+                if (differ != 15 && differ != -15) {
+                    if($(".layui-laydate").length){
+                        $("#year").val(value);
+                        $(".layui-laydate").remove();
+                    }
+                }
+                initYear = selectYear;
+            }
+        });
+
+        // 年月日选择器（加入时间）
+        laydate.render({
+            elem: '#joinDate'
+        });
+
+    });
+
+
+
+
+    // 三级联动的JS代码
+
+    //配置插件目录
+    layui.config({
+        base: '../../js/lay-module/layarea/'
+        , version: '1.0'
+    });
+    //一般直接写在一个js文件中
+    layui.use(['layer', 'form', 'layarea'], function () {
+        var layer = layui.layer
+            , form = layui.form
+            , layarea = layui.layarea;
+
+        layarea.render({
+            elem: '#area-picker',
+            change: function (res) {
+                //选择结果
+                console.log(res);
+            }
+        });
+    });
+layui.use(function(){
+	  // 获取laydate
+    var laydate = layui.laydate;
+    // 渲染
+    laydate.render({
+      elem: '#birthday' // 出生日期文本框的id
+    });
+    // 正文显示
+    laydate.render({
+      elem: '#createDate', // 创建日期文本框的id
+      lang: 'cn' // 日历显示语言为中文
+    });
+	// 年月
+	laydate.render({
+	    elem: '#ID-laydate-type-month',
+	    type: 'month'
+	  });
+	  
+  });
+</script>
+<script>
+		 layui.use(function(){
+		   var upload = layui.upload;
+		   var layer = layui.layer;
+		   
+		   // 渲染
+		   upload.render({
+		     elem: '#ID-upload-demo-size',
+		     url: '', // 此处配置你自己的上传接口即可
+		     size: 200, // 限制文件大小，单位 KB
+		     done: function(res){
+		       layer.msg('上传成功');
+		       console.log(res);
+		     }
+		   });
+		 });
+		 </script>
+</body>
+</html>
