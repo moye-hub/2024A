@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>场地详情</title>
+		<link rel="stylesheet" href="../lib/layui-v2.6.3/css/layui.css">
+		<style>
+			.required::before {
+				/* 星号内容 */
+				content: "*";
+					/* 红色 */
+				color: #ff0000;
+				/* 与文字保持一点距离 */
+				margin-right: 4px;
+			/* 星号加粗 */
+				font-weight: bold;				
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 网页标题，这里用fieldset来设置 -->
+		<fieldset class="layui-elem-field layui-field-title">
+			<!-- 修改2：把“添加用户”换成自己的 -->
+			<legend style="font-weight: bold;">场地详情</legend>
+		</fieldset>
+		<div class="layui-form">
+			<div class="layui-form-item">
+				<label class="layui-form-label required">场地名称</label>
+				<div class="layui-input-block">
+				<input id="classname" type="text" name="classname" class="layui-input" lay-verify="required"
+					lay-reqtext="场地名称不能为空!" placeholder="请输入场地名称" value="瑜伽室A" disabled readonly>
+					</div>
+			</div>
+			
+			<div class="layui-form-item">
+				<label class="layui-form-label required">场地编号</label>
+				<div class="layui-input-block">
+				<input id="place" type="text" name="place" class="layui-input"placeholder="请输入场地编号" value="10000" disabled readonly>
+					</div>
+			</div>
+			
+			<div class="layui-form-item">
+			  <label class="layui-form-label required">所在位置</label>
+			  <div class="layui-input-inline">
+			    <select name="quiz1">
+			      <option value="0" disabled readonly>请选择区域</option>
+			      <option value="1" selected >西区</option>
+			      <option value="2" disabled readonly>东区</option>
+			      <option value="3" disabled readonly>中心区</option>
+			    </select>
+			  </div>
+			  <div class="layui-input-inline">
+			    <select name="quiz2">
+			      <option value="0" disabled readonly>请选择楼号</option>
+			      <option value="1">1号楼</option>
+			      <option value="2" disabled readonly>2号楼</option>
+			      <option value="3" disabled readonly>3号楼</option>
+				  <option value="4" disabled readonly>4号楼</option>
+				  <option value="5" disabled readonly>5号楼</option>
+				  <option value="6" disabled readonly>6号楼</option>
+			    </select>
+			  </div>
+			  <div class="layui-input-inline">
+			    <select name="quiz3">
+			      <option value="0" disabled readonly>请选择楼层</option>
+			      <option value="1">1层</option>
+			      <option value="2" disabled readonly>2层</option>
+			      <option value="3" disabled readonly>3层</option>
+				  <option value="4" disabled readonly>4层</option>
+				  <option value="5" disabled readonly>5层</option>
+				  <option value="6" disabled readonly>6层</option>
+			    </select>
+			  </div>
+			  <div class="layui-form-mid layui-text-em">
+			    <i class="layui-icon layui-icon-tips" lay-tips="{
+			      content: '未做联动交互',
+			      margin: '0 0 0 -10px'
+			    }"></i>
+			  </div>
+			</div>
+			
+			<div class="layui-form-item">
+				<label class="layui-form-label required">配备设施</label>
+				<div class="layui-input-block">
+					<select lay-verify="required">
+						<option value="1">瑜伽球</option>
+						<option value="2" disabled readonly>动感单车</option>
+						<option value="3" disabled readonly>跑步机</option>
+						<option value="4" disabled readonly>哑铃</option>
+					</select>
+				</div>
+			</div>
+			
+			<div class="layui-form-item">
+				<label class="layui-form-label required">面积大小</label>
+				<div class="layui-input-block">
+				<input id="size" type="text" name="size" class="layui-input" lay-verify="required"
+					lay-reqtext="面积大小不能为空!" placeholder="请输入面积大小（默认单位为m²）" value="100" disabled readonly>
+					</div>
+			</div>
+			
+			<div class="layui-form-item">
+				<label class="layui-form-label required">容纳人数</label>
+				<div class="layui-input-block">
+				<input id="classtime" type="text" name="classtime" class="layui-input" lay-verify="required"
+					lay-reqtext="容纳人数不能为空!" placeholder="请输入容纳人数" value="50" disabled readonly>
+					</div>
+			</div>
+			
+			<div class="layui-form-item">
+				<label class="layui-form-label required">使用规则</label>
+				<div class="layui-input-block">
+				<input id="classrule" type="text" name="classrule" class="layui-input" lay-verify="required"
+					lay-reqtext="使用规则不能为空!" placeholder="请输入使用规则" value="不得损坏器材，课后打扫干净场地" disabled readonly>
+					</div>
+			</div>
+			
+			<div class="layui-form-item">
+				<label class="layui-form-label required">课程等级</label>
+				<div class="layui-input-block">
+					<input type="radio" name="people" value="新手" title="新手" checked="">
+					<input type="radio" name="people" value="进阶" title="进阶" disabled readonly>
+					<input type="radio" name="people" value="专业" title="专业" disabled readonly>
+				</div>
+			</div>
+			
+			<div class="layui-form-item">
+			<label class="layui-form-label required">班级照片</label>
+			<div class="layui-upload-drag" style="display: block; width: 200px;height: 100px;margin-left: 120px;" id="ID-upload-demo-drag">
+			  <i class="layui-icon layui-icon-upload"></i> 
+			  <div>点击上传，或将文件拖拽到此处(照片方便学员更容易精确定位自己的教室)</div>
+			  <div class="layui-hide" id="ID-upload-demo-preview">
+			    <hr> <img src="" alt="上传成功后渲染" style="max-width: 100%">
+			  </div>
+			</div>
+			</div>
+			
+			<div class="layui-form-item">
+			   <label class="layui-form-label required">状态</label>
+			   <div class="layui-input-block">
+			       <input type="checkbox" name="status" lay-skin="switch" lay-filter="switchTest" lay-text="开放|关闭" disabled readonly>
+			   </div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">课程备注</label>
+				<div class="layui-input-block">
+					<textarea   name="remark" class="layui-textarea" placeholder="请输入课程备注" disabled readonly></textarea>
+				</div>
+			</div> <!-- 文本域结束 -->
+		</div>	
+		<script src="../lib/layui-v2.6.3/layui.js"></script>
+		<script>
+			// 加载Layui中的form模块、layer模块
+			layui.use(['form', 'layer'], function() {
+				var form = layui.form; // 获得form模块
+				var layer = layui.layer; // 获得layer模块
+				$ = layui.$; // 获得jQuery中的$
+				$("#place").blur(function() {
+					var place = $("#place").val();
+					var reg = /^[0-9a-zA-Z]{2,10}$/; //正则表达式
+					if (place.length == 0 || place == null || place == '') {
+						layer.msg('课程编号不能为空', {icon: 0});
+					}
+				});
+				$("#classname").blur(function() {
+					var classname = $("#classname").val();
+					var reg = /^[\u4e00-\u9fa5a-zA-Z]{2,10}$/; //正则表达式
+					if (classname.length == 0 || classname == null || classname == '') {
+						layer.msg('场地名不能为空', {icon: 0});
+					}else {
+						if (!reg.test(classname)) {
+							layer.msg('场地名格式不对，场地名为2-10位汉字和字母', {icon: 2});
+						}
+					}
+				});
+				$("#classrule").blur(function() {
+					var classrule = $("#classrule").val();
+					var reg = /^[\u4e00-\u9fa5]{2,10}$/; //正则表达式
+					if (classrule.length == 0 || classrule == null || classrule == '') {
+						layer.msg('使用规则不能为空', {icon: 0});
+					}
+				});
+				$("#classtime").blur(function() {
+					var classtime = $("#classtime").val();
+					var reg = /^[0-9]{2,10}$/; //正则表达式
+					if (classtime.length == 0 || classtime == null || classtime == '') {
+						layer.msg('容纳人数不能为空', {icon: 0});
+					}else {
+						if (!reg.test(classtime)) {
+							layer.msg('容纳人数格式不对,容纳人数为数字', {icon: 2});
+						}
+					}
+				});
+				$("#size").blur(function() {
+					var size = $("#size").val();
+					var reg = /^[0-9]{1,10}$/; //正则表达式
+					if (size.length == 0 || size == null || size == '') {
+						layer.msg('场地大小不能为空', {icon: 0});
+					}else {
+						if (!reg.test(size)) {
+							layer.msg('场地大小格式不对,格式为数字', {icon: 2});
+						}
+					}
+				});
+			});
+		
+			layui.use(['form'], function() {
+				var form = layui.form;
+				  layer = layui.layer;
+				    $ = layui.$;
+		
+				//监听表单提交：确认保存按钮，提交按钮的lay-filter="saveBtn"
+				form.on('submit(saveBtn)', function(data) {
+					var index = layer.alert(JSON.stringify(data.field), {
+						title: '最终的提交信息'
+					}, function() {
+						// 关闭弹出层
+						layer.close(index);
+		
+						var iframeIndex = parent.layer.getFrameIndex(window.name);
+						parent.layer.close(iframeIndex);
+		
+					});
+					return false;
+				});
+		
+			});
+		
+		</script>
+	</body>
+</html>

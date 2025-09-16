@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>添加场地</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <link rel="stylesheet" href="../lib/layui-v2.6.3/css/layui.css" media="all">
+     
+    <style>
+        /* 红色星号前缀样式 */
+        .required::before {
+            content: "*";
+            color: #ff0000;
+            margin-right: 4px;
+            font-weight: bold;                
+        }
+    </style>
+</head>
+<body>
+    <!-- 网页标题 -->
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend style="font-weight: bold;">添加场地</legend>
+    </fieldset>
+
+    <div class="layui-form" lay-filter="placeForm">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">场地名称</label>
+            <div class="layui-input-block">
+                <input id="placeName" type="text" name="placeName" class="layui-input" lay-verify="required"
+                    lay-reqtext="场地名称不能为空!" placeholder="请输入场地名称">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">场地编号</label>
+            <div class="layui-input-block">
+                <input id="placeCode" type="text" name="placeCode" class="layui-input" lay-verify="required"
+                    lay-reqtext="场地编号不能为空!" placeholder="请输入场地编号">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">所在位置</label>
+            <div class="layui-input-inline">
+                <select id="area" name="area" lay-verify="required">
+                    <option value="" selected>请选择区域</option>
+                    <option value="1">西区</option>
+                    <option value="2">东区</option>
+                    <option value="3">中心区</option>
+                </select>
+            </div>
+            <div class="layui-input-inline">
+                <select id="building" name="building" lay-verify="required">
+                    <option value="">请选择楼号</option>
+                    <option value="1">1号楼</option>
+                    <option value="2">2号楼</option>
+                    <option value="3">3号楼</option>
+                    <option value="4">4号楼</option>
+                    <option value="5">5号楼</option>
+                    <option value="6">6号楼</option>
+                </select>
+            </div>
+            <div class="layui-input-inline">
+                <select id="floor" name="floor" lay-verify="required">
+                    <option value="">请选择楼层</option>
+                    <option value="1">1层</option>
+                    <option value="2">2层</option>
+                    <option value="3">3层</option>
+                    <option value="4">4层</option>
+                    <option value="5">5层</option>
+                    <option value="6">6层</option>
+                </select>
+            </div>
+            <div class="layui-form-mid layui-text-em">
+                <i class="layui-icon layui-icon-tips" lay-tips="{
+                  content: '未做联动交互',
+                  margin: '0 0 0 -10px'
+                }"></i>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">配备设施</label>
+            <div class="layui-input-block">
+                <select id="facility" name="facility" lay-verify="required">
+                    <option value="">请选择配备设施</option>
+                    <option value="1">瑜伽球</option>
+                    <option value="2">动感单车</option>
+                    <option value="3">跑步机</option>
+                    <option value="4">哑铃</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">面积大小</label>
+            <div class="layui-input-block">
+                <input id="placeSize" type="text" name="placeSize" class="layui-input" lay-verify="required"
+                    lay-reqtext="面积大小不能为空!" placeholder="请输入面积大小（默认单位为m²）">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">容纳人数</label>
+            <div class="layui-input-block">
+                <input id="capacity" type="text" name="capacity" class="layui-input" lay-verify="required"
+                    lay-reqtext="容纳人数不能为空!" placeholder="请输入容纳人数">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">使用规则</label>
+            <div class="layui-input-block">
+                <input id="useRule" type="text" name="useRule" class="layui-input" lay-verify="required"
+                    lay-reqtext="使用规则不能为空!" placeholder="请输入使用规则">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">课程等级</label>
+            <div class="layui-input-block">
+                <input type="radio" name="courseLevel" value="新手" title="新手" checked>
+                <input type="radio" name="courseLevel" value="进阶" title="进阶">
+                <input type="radio" name="courseLevel" value="专业" title="专业">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">班级照片</label>
+            <div class="layui-upload-drag" style="display: block; width: 200px;height: 100px;margin-left: 120px;" id="ID-upload-demo-drag">
+                <i class="layui-icon layui-icon-upload"></i> 
+                <div>点击上传，或将文件拖拽到此处(照片方便学员更容易精确定位自己的教室)</div>
+                <div class="layui-hide" id="ID-upload-demo-preview">
+                    <hr> <img src="" alt="上传成功后渲染" style="max-width: 100%">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">状态</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="status" lay-skin="switch" lay-filter="switchTest" lay-text="开放|关闭" checked>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">课程备注</label>
+            <div class="layui-input-block">
+                <textarea name="remark" class="layui-textarea" placeholder="请输入课程备注"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认添加</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+    <script>
+        layui.use(['form', 'layer', 'upload'], function() {
+            var form = layui.form;
+            var layer = layui.layer;
+            var upload = layui.upload;
+            $ = layui.$;
+
+            function validatePlaceForm() {
+                var placeName = $('#placeName').val().trim();
+                if (!placeName) {
+                    layer.msg('场地名称不能为空', { icon: 5 });
+                    $('#placeName').focus();
+                    return false;
+                }
+                if (!/^[\u4e00-\u9fa5a-zA-Z]{2,10}$/.test(placeName)) {
+                    layer.msg('场地名需为2-10位汉字和字母组合', { icon: 2 });
+                    $('#placeName').focus();
+                    return false;
+                }
+
+                var placeCode = $('#placeCode').val().trim();
+                if (!placeCode) {
+                    layer.msg('场地编号不能为空', { icon: 5 });
+                    $('#placeCode').focus();
+                    return false;
+                }
+                if (!/^[0-9a-zA-Z]{2,10}$/.test(placeCode)) {
+                    layer.msg('场地编号需为2-10位数字和字母组合', { icon: 2 });
+                    $('#placeCode').focus();
+                    return false;
+                }
+
+                var area = $('#area').val().trim();
+                var building = $('#building').val().trim();
+                var floor = $('#floor').val().trim();
+                if (!area) {
+                    layer.msg('请选择所在区域', { icon: 5 });
+                    $('#area').focus();
+                    return false;
+                }
+                if (!building) {
+                    layer.msg('请选择所在楼号', { icon: 5 });
+                    $('#building').focus();
+                    return false;
+                }
+                if (!floor) {
+                    layer.msg('请选择所在楼层', { icon: 5 });
+                    $('#floor').focus();
+                    return false;
+                }
+
+                var facility = $('#facility').val().trim();
+                if (!facility) {
+                    layer.msg('请选择配备设施', { icon: 5 });
+                    $('#facility').focus();
+                    return false;
+                }
+
+                var placeSize = $('#placeSize').val().trim();
+                if (!placeSize) {
+                    layer.msg('面积大小不能为空', { icon: 5 });
+                    $('#placeSize').focus();
+                    return false;
+                }
+                if (!/^[1-9]\d{0,9}$/.test(placeSize)) {
+                    layer.msg('面积大小需为1-10位数字（单位：m²）', { icon: 2 });
+                    $('#placeSize').focus();
+                    return false;
+                }
+
+                var capacity = $('#capacity').val().trim();
+                if (!capacity) {
+                    layer.msg('容纳人数不能为空', { icon: 5 });
+                    $('#capacity').focus();
+                    return false;
+                }
+                if (!/^[1-9]\d{0,9}$/.test(capacity)) {
+                    layer.msg('容纳人数需为1-10位数字', { icon: 2 });
+                    $('#capacity').focus();
+                    return false;
+                }
+
+                var useRule = $('#useRule').val().trim();
+                if (!useRule) {
+                    layer.msg('使用规则不能为空', { icon: 5 });
+                    $('#useRule').focus();
+                    return false;
+                }
+                if (!/^[\u4e00-\u9fa5]{2,10}$/.test(useRule)) {
+                    layer.msg('使用规则需为2-10位纯汉字', { icon: 2 });
+                    $('#useRule').focus();
+                    return false;
+                }
+
+                // 所有校验通过
+                return true;
+            }
+
+            $("#placeName").blur(function() {
+                var placeName = $(this).val().trim();
+                if (!placeName) {
+                    layer.msg('场地名称不能为空', { icon: 5 });
+                } else if (!/^[\u4e00-\u9fa5a-zA-Z]{2,10}$/.test(placeName)) {
+                    layer.msg('场地名需为2-10位汉字和字母组合', { icon: 2 });
+                }
+            });
+
+            $("#placeCode").blur(function() {
+                var placeCode = $(this).val().trim();
+                if (!placeCode) {
+                    layer.msg('场地编号不能为空', { icon: 5 });
+                } else if (!/^[0-9a-zA-Z]{2,10}$/.test(placeCode)) {
+                    layer.msg('场地编号需为2-10位数字和字母组合', { icon: 2 });
+                }
+            });
+
+            $("#area").blur(function() {
+                if (!$(this).val().trim()) {
+                    layer.msg('请选择所在区域', { icon: 5 });
+                }
+            });
+
+            $("#building").blur(function() {
+                if (!$(this).val().trim()) {
+                    layer.msg('请选择所在楼号', { icon: 5 });
+                }
+            });
+
+            $("#floor").blur(function() {
+                if (!$(this).val().trim()) {
+                    layer.msg('请选择所在楼层', { icon: 5 });
+                }
+            });
+
+            $("#facility").blur(function() {
+                if (!$(this).val().trim()) {
+                    layer.msg('请选择配备设施', { icon: 5 });
+                }
+            });
+
+            $("#placeSize").blur(function() {
+                var placeSize = $(this).val().trim();
+                if (!placeSize) {
+                    layer.msg('场地大小不能为空', { icon: 5 });
+                } else if (!/^[1-9]\d{0,9}$/.test(placeSize)) {
+                    layer.msg('场地大小需为1-10数字（单位：m²）', { icon: 2 });
+                }
+            });
+
+            $("#capacity").blur(function() {
+                var capacity = $(this).val().trim();
+                if (!capacity) {
+                    layer.msg('容纳人数不能为空', { icon: 5 });
+                } else if (!/^[1-9]\d{0,9}$/.test(capacity)) {
+                    layer.msg('容纳人数需为1-10数字', { icon: 2 });
+                }
+            });
+
+            $("#useRule").blur(function() {
+                var useRule = $(this).val().trim();
+                if (!useRule) {
+                    layer.msg('使用规则不能为空', { icon: 5 });
+                } else if (!/^[\u4e00-\u9fa5]{2,10}$/.test(useRule)) {
+                    layer.msg('使用规则需为2-10位汉字', { icon: 2 });
+                }
+            });
+
+            form.on('submit(saveBtn)', function(data) {
+                // 提交前先执行全量校验，格式错误则阻止提交
+                if (!validatePlaceForm()) {
+                    return false;
+                }
+
+                // 校验通过，弹出最终提交信息（格式化JSON，便于查看）
+                var index = layer.alert(JSON.stringify(data.field, null, 2), {
+                    title: '场地信息提交成功',
+                    area: ['600px', '550px'], // 适配多字段显示
+                    icon: 1 // 成功图标，提升体验
+                }, function() {
+
+				layer.close(index);
+				var iframeIndex = parent.layer.getFrameIndex(window.name);
+				parent.layer.close(iframeIndex);
+				parent.location.reload();
+			});
+			return false; // 阻止表单默认跳转
+		});
+
+		upload.render({
+			elem: '#ID-upload-demo-drag',
+			url: '', // 实际项目中替换为你的图片上传接口
+			accept: 'images', // 仅允许上传图片
+			acceptMime: 'image/*', // 图片格式限制
+			exts: 'jpg|png|jpeg|gif', // 允许的图片后缀
+			done: function(res) {
+				layer.msg('图片上传成功', { icon: 1 });
+				// 上传成功后显示预览图
+				$('#ID-upload-demo-preview').removeClass('layui-hide')
+					.find('img').attr('src', res.files.file || res.data.src); // 适配不同接口返回格式
+				console.log('上传返回数据：', res);
+			},
+			error: function(index, upload) {
+				layer.msg('图片上传失败，请重试', { icon: 2 });
+			}
+		});
+
+		// 渲染表单组件（确保下拉框、开关、单选框样式正常）
+		form.render();
+	});
+</script>
+</body>
+</html>

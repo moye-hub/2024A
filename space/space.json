@@ -1,0 +1,99 @@
+{
+  "code": 0,
+  "msg": "",
+  "count": 1000,
+  "data": [
+    {
+      "id": 10000,
+      "name": "瑜伽室A",
+	  "location":"西区 1号楼 1层",
+      "equip": "瑜伽球",
+	  "teacher": "张三",
+	  "grade":"新手",
+	  "size":"100",
+	  "people":"50"
+    },
+    {
+      "id": 10001,
+      "name": "瑜伽室B",
+      "location":"东区 1号楼 1层",
+      "equip": "瑜伽球",
+      "teacher": "王五",
+      "grade":"进阶",
+      "size":"100",
+      "people":"50"
+    },{
+      "id": 10002,
+      "name": "瑜伽室A",
+      "location":"西区 1号楼 1层",
+      "equip": "瑜伽球",
+      "teacher": "宋七",
+      "grade":"专业",
+      "size":"100",
+      "people":"50"
+    },{
+      "id": 10003,
+      "name": "动感单车房",
+      "location":"东区 1号楼 1层",
+      "equip": "动感单车",
+      "teacher": "张三",
+      "grade":"进阶",
+      "size":"100",
+      "people":"50"
+    },{
+      "id": 10004,
+      "name": "力量训练房",
+      "location":"中心区 5号楼 2层",
+      "equip": "无",
+      "teacher": "马十三",
+      "grade":"专业",
+      "size":"100",
+      "people":"50"
+    },{
+      "id": 10005,
+      "name": "拳击房",
+      "location":"西区 1号楼 1层",
+      "equip": "拳击台",
+      "teacher": "张三",
+      "grade":"新手",
+      "size":"100",
+      "people":"50"
+    },{
+      "id": 10006,
+      "name": "瑜伽室A",
+      "location":"西区 1号楼 1层",
+      "equip": "瑜伽球",
+      "teacher": "张三",
+      "grade":"专业",
+      "size":"100",
+      "people":"50"
+    },{
+      "id": 10007,
+      "name": "瑜伽室A",
+      "location":"西区 1号楼 1层",
+      "equip": "瑜伽球",
+      "teacher": "张三",
+      "grade":"新手",
+      "size":"100",
+      "people":"50"
+    },{
+      "id": 10008,
+      "name": "瑜伽室A",
+      "location":"西区 1号楼 1层",
+      "equip": "瑜伽球",
+      "teacher": "张三",
+      "grade":"进阶",
+      "size":"100",
+      "people":"50"
+    },{
+      "id": 10009,
+     "name": "瑜伽室A",
+     "location":"西区 1号楼 1层",
+     "equip": "瑜伽球",
+     "teacher": "李四",
+     "grade":"专业",
+     "size":"100",
+     "people":"50"
+    }
+  ]
+}

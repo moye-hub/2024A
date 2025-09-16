@@ -1,0 +1,99 @@
+{
+  "code": 0,
+  "msg": "",
+  "count": 1000,
+  "data": [
+    {
+      "id": 10000,
+	  "username": "adajd",
+      "realname": "张三",
+      "userid": "140564123657896",
+      "sex": "男",
+      "telephone": "13545678767",
+      "qq": "普通用户",
+      "status": "启用"
+    },
+    {
+      "id": 10001,
+	  "username": "ghukh",
+      "realname": "王五",
+      "userid": "140564153567896",
+      "sex": "女",
+      "telephone": "13834523412",
+      "qq": "管理员",
+      "status":"启用"
+    },{
+      "id": 10002,
+	  "username": "gklhl",
+      "realname": "李四",
+      "userid": "140564135657896",
+      "sex": "男",
+      "telephone": "13545678767",
+      "qq": "超级管理员",
+      "status": "启用"
+    },{
+      "id": 10003,
+	  "username": "ftuijt",
+      "realname": "赵六",
+      "userid": "140564452257896",
+      "sex": "女",
+      "telephone": "18045678767",
+      "qq": "普通用户",
+      "status":"启用"
+    },{
+      "id": 10004,
+	  "username": "gkgkgh",
+      "realname": "张三",
+      "userid": "140564123657896",
+      "sex": "男",
+      "telephone": "13545678767",
+      "qq": "超级管理员",
+      "status": "禁用"
+    },{
+      "id": 10005,
+	  "username": "guikhgk",
+      "realname": "张三",
+      "userid": "140564123657896",
+      "sex": "女",
+      "telephone": "13545678767",
+      "qq": "普通用户",
+      "status": "启用"
+    },{
+      "id": 10006,
+	  "username": "gikuygh",
+      "realname": "张三",
+      "userid": "140564123657896",
+      "sex": "女",
+      "telephone": "13545678767",
+      "qq": "管理员",
+      "status": "启用"
+    },{
+      "id": 10007,
+	  "username": "gyouk",
+      "realname": "张三",
+      "userid": "140564123657896",
+      "sex": "男",
+      "telephone": "13545678767",
+      "qq": "管理员",
+      "status": "启用"
+    },{
+      "id": 10008,
+	  "username": "gyik",
+      "realname": "张三",
+      "userid": "140564123657896",
+      "sex": "男",
+      "telephone": "13545678767",
+      "qq": "普通用户",
+      "status": "启用"
+    },{
+      "id": 10009,
+	  "username": "gykolhgg",
+      "realname": "闫十",
+      "userid": "140564123657896",
+      "sex": "女",
+      "telephone": "13545678767",
+      "qq": "管理员",
+      "status": "启用"
+    }
+  ]
+}

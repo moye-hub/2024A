@@ -1,0 +1,140 @@
+{
+  "code": 0,
+  "msg": "",
+  "count": 1000,
+  "data": [
+    {
+      "id": 10000,
+      "name": "瑜伽馆A",
+      "sex": "",
+      "experience": "",
+      "city": "西区 1号楼 1层",
+      "right": "启用",
+      "children": [
+        {
+          "id": 100001,
+          "name": "瑜伽馆A-休息区",
+          "sex": "张阿姨",
+          "experience": "2025-09-01",
+          "city": "",
+          "right": "已清洁"
+        },
+        {
+          "id": 100002,
+          "name": "瑜伽馆A-练习区",
+          "sex": "李阿姨",
+          "experience": "2025-09-01",
+          "city": "",
+          "right": "已清洁"
+        }
+      ]
+    },
+    {
+      "id": 10001,
+      "name": "瑜伽馆B",
+      "sex": "",
+      "experience": "",
+      "city": "西区 1号楼 2层",
+      "right": "启用",
+      "children": [
+        {
+          "id": 100011,
+          "name": "瑜伽馆B-休息区",
+          "sex": "王阿姨",
+          "experience": "2025-09-01",
+          "city": "",
+          "right": "已清洁"
+        }
+      ]
+    },
+    {
+      "id": 10002,
+      "name": "瑜伽馆C",
+      "sex": "",
+      "experience": "",
+      "city": "西区 2号楼 1层",
+      "right": "启用",
+      "children": []
+    },
+    {
+      "id": 10003,
+      "name": "瑜伽馆D",
+      "sex": "",
+      "experience": "",
+      "city": "西区 2号楼 2层",
+      "right": "启用",
+      "children": [
+        {
+          "id": 100031,
+          "name": "瑜伽馆D-器械区",
+          "sex": "赵阿姨",
+          "experience": "2025-09-02",
+          "city": "",
+          "right": "已清洁"
+        },
+        {
+          "id": 100032,
+          "name": "瑜伽馆D-更衣室",
+          "sex": "赵阿姨",
+          "experience": "2025-09-02",
+          "city": "",
+          "right": "未清洁"
+        }
+      ]
+    },
+    {
+      "id": 10004,
+      "name": "瑜伽馆E",
+      "sex": "",
+      "experience": "",
+      "city": "东区 1号楼 1层",
+      "right": "启用",
+      "children": []
+    },
+    {
+      "id": 10005,
+      "name": "瑜伽馆F",
+      "sex": "",
+      "experience": "",
+      "city": "东区 1号楼 2层",
+      "right": "启用",
+      "children": []
+    },
+    {
+      "id": 10006,
+      "name": "瑜伽馆G",
+      "sex": "",
+      "experience": "",
+      "city": "东区 2号楼 1层",
+      "right": "启用",
+      "children": []
+    },
+    {
+      "id": 10007,
+      "name": "瑜伽馆H",
+      "sex": "",
+      "experience": "",
+      "city": "东区 2号楼 2层",
+      "right": "启用",
+      "children": []
+    },
+    {
+      "id": 10008,
+      "name": "瑜伽馆I",
+      "sex": "",
+      "experience": "",
+      "city": "南区 1号楼 1层",
+      "right": "启用",
+      "children": []
+    },
+    {
+      "id": 10009,
+      "name": "瑜伽馆J",
+      "sex": "",
+      "experience": "",
+      "city": "南区 1号楼 2层",
+      "right": "启用",
+      "children": []
+    }
+  ]
+}

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+		<head>
+		  <meta charset="utf-8">
+		  <meta name="viewport" content="width=device-width, initial-scale=1">
+		  <title>场地清理</title>
+		  <link href="../css/layui.css" rel="stylesheet">
+		</head>
+		<body>
+			<fieldset class="layui-elem-field layui-field-title">
+				<legend style="font-weight: bold;">场地清理</legend>
+			</fieldset>
+		<table class="layui-hide" id="ID-treeTable-demo"></table>
+		<script type="text/html" id="TPL-treeTable-demo">
+		  <div class="layui-btn-container">
+			<button class="layui-btn layui-btn-sm" lay-event="getChecked">获取选中数据</button>
+		  </div>
+		</script>
+		<script type="text/html" id="TPL-treeTable-demo-tools">
+		  <div class="layui-btn-container">
+			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+			<a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="addChild">新增</a>
+			<a class="layui-btn layui-btn-xs" lay-event="more">更多 <i class="layui-icon layui-icon-down"></i></a>
+		  </div>
+		</script>
+		<!-- 编辑表单模板 -->
+		<script type="text/html" id="TPL_edit_form">
+		  <form class="layui-form" lay-filter="editForm">
+			<input type="hidden" name="id" value="{{d.id}}">
+			
+			<div class="layui-form-item">
+			  <label class="layui-form-label">场地名</label>
+			  <div class="layui-input-block">
+				<input type="text" name="name" value="{{d.name}}" lay-verify="required" class="layui-input">
+			  </div>
+			</div>
+			<div class="layui-form-item">
+			  <label class="layui-form-label">清洁员工名</label>
+			  <div class="layui-input-block">
+				<input type="text" name="name2" value="{{d.name2}}" lay-verify="required|chinese" class="layui-input">
+			  </div>
+			</div>
+			<div class="layui-form-item">
+			  <label class="layui-form-label">清洁日期</label>
+			  <div class="layui-input-block">
+				<input type="text" name="experience" value="{{d.experience}}" lay-verify="required|date" class="layui-input">
+			  </div>
+			</div>
+			<div class="layui-form-item">
+			  <label class="layui-form-label">场地位置</label>
+			  <div class="layui-input-block">
+				<input type="text" name="city" value="{{d.city}}" class="layui-input">
+			  </div>
+			</div>
+			<div class="layui-form-item">
+			  <div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="formSubmit">提交</button>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+			  </div>
+			</div>
+		  </form>
+		</script>
+		<!-- 新增节点表单模板 -->
+		<script type="text/html" id="TPL_add_form">
+		  <form class="layui-form" lay-filter="addForm">
+			<div class="layui-form-item">
+			  <label class="layui-form-label">场地名</label>
+			  <div class="layui-input-block">
+				<input type="text" name="name" value="" lay-verify="required" class="layui-input" placeholder="请输入场地名称">
+			  </div>
+			</div>
+			<div class="layui-form-item">
+			  <label class="layui-form-label">清洁员工名</label>
+			  <div class="layui-input-block">
+				<input type="text" name="name2" value="{{d.name2}}" lay-verify="required|chinese" class="layui-input" placeholder="请输入清洁员工名（仅限汉字）">
+			  </div>
+			</div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label required">清洁日期</label>
+			    <div class="layui-input-block" style="width: 390px;">
+			      <input type="text" name="experience" class="layui-input" id="birthday" lay-verify="required|date" placeholder="yyyy-MM-dd">
+			    </div>
+			  </div>
+		
+			<div class="layui-form-item">
+			  <div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="addFormSubmit">确认</button>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+			  </div>
+			</div>
+		  </form>
+		</script>
+		<script src="../js/layui.js"></script>
+		<script>
+		layui.use(function(){
+		  var treeTable = layui.treeTable;
+		  var layer = layui.layer;
+		  var dropdown = layui.dropdown;
+		  var form = layui.form;
+		  var laytpl = layui.laytpl;
+
+		  // 自定义验证规则 - 汉字验证
+		  form.verify({
+		    chinese: function(value) {
+		      // 匹配所有汉字（包括简体和繁体）
+		      var chineseRegex = /^[\u4e00-\u9fa5]+$/;
+		      if (!chineseRegex.test(value)) {
+		        return '请输入正确的名称';
+		      }
+		    },
+		    date: function(value) {
+		      var dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+		      if (!dateRegex.test(value)) {
+		        return '请输入 yyyy-MM-dd 格式的日期';
+		      }
+		    }
+		  });
+
+		  // 渲染表格
+		  var inst = treeTable.render({
+			elem: '#ID-treeTable-demo',
+			url: 'extra.json', 
+			tree: {},
+			maxHeight: '501px',
+			toolbar: '#TPL-treeTable-demo',
+			cols: [[
+			  {type: 'checkbox', fixed: 'left'},
+			  {field: 'id', title: 'ID', width: 100, sort: true, fixed: 'left'},
+			  {field: 'name', title: '场地名', width: 180, fixed: 'left'},
+			  {field: 'sex', title: '清洁员工名', width: 100, fixed: 'left'},
+			  {field: 'experience', title: '清洁日期', width: 120, sort: true},
+			  {field: 'city', title: '场地位置', width: 180},
+			  {
+			  		field : 'status',
+			  		width:150,
+			  		title : '场地状态',
+			  		templet : '#userStatus', // 上面用户状态列定义的id：userStatus
+			  		unresize : true,
+			  		align: "center"
+			  	},
+			  	{title: '操作', minWidth: 190, toolbar: '#TPL-treeTable-demo-tools', align: "center"}
+			]],
+			limits: [10, 15, 20, 25, 50, 100], // 每页显示条数切换
+			limit: 15, // 每页默认显示15条数据
+			page: true, // 不写的话，分页显示不会显示
+			skin: 'line' // 表格有边框
+		  });
+
+		  // 表头工具栏事件
+		  treeTable.on("toolbar(ID-treeTable-demo)", function (obj) {
+			var config = obj.config;
+			var tableId = config.id;
+			var status = treeTable.checkStatus(tableId);
+			if (obj.event === "getChecked") {
+			  if(!status.data.length) return layer.msg('无选中数据');
+			  console.log(status);
+			  layer.alert("当前数据选中已经输出到控制台，<br>您可按 F12 从控制台中查看结果。");
+			}
+		  });
+
+		  // 单元格工具事件
+		  treeTable.on('tool('+ inst.config.id +')', function (obj) {
+			var layEvent = obj.event;
+			var trData = obj.data;
+			var trElem = obj.tr;
+			var tableId = obj.config.id;
+			var currentIndex = trElem.attr('data-index');
+
+			if (layEvent === "detail") {
+			  layer.msg("查看操作：" + trData.name);
+			} else if (layEvent === "addChild") {
+			  // 弹出新增节点表单
+			  var addIndex = layer.open({
+				type: 1,
+				title: '新增子节点',
+				content: laytpl(document.getElementById('TPL_add_form').innerHTML).render({}),
+				area: ['500px', '400px'],
+				success: function(layero) {
+				  form.render(null, 'addForm');
+				  
+				  // 为新增表单添加提交事件
+				  form.on('submit(addFormSubmit)', function(data) {
+					// 生成唯一ID
+					data.field.id = Date.now();
+					
+					// 新增节点
+					var newNode = treeTable.addNodes(tableId, {
+					  parentIndex: currentIndex,  // 使用当前行索引作为父节点索引
+					  index: -1,  // 添加到最后
+					  data: data.field
+					});
+					
+					if(newNode) {
+					  layer.msg('新增成功');
+					  layer.close(addIndex);
+					} else {
+					  layer.msg('新增失败，请重试');
+					}
+					return false; // 阻止表单跳转
+				  });
+				},
+				btn: [] // 不使用layer自带按钮，使用表单内的按钮
+			  });
+			} else if (layEvent === "more") {
+			  dropdown.render({
+				elem: this,
+				show: true,
+				align: "right",
+				data: [
+				  {title: "修改内容", id: "editAll"},
+				  {title: "删除", id: "del"}
+				],
+				click: function (menudata) {
+				  if (menudata.id === "del") {
+					layer.confirm("真的删除行么", function (index) {
+					  obj.del();
+					  layer.close(index);
+					});
+				  } else if (menudata.id === "editAll") {
+					var dataClone = JSON.parse(JSON.stringify(trData));
+					
+					var editIndex = layer.open({
+					  type: 1,
+					  title: '修改内容',
+					  content: laytpl(document.getElementById('TPL_edit_form').innerHTML).render(dataClone),
+					  area: ['500px', '400px'],
+					  success: function(layero) {
+						form.render(null, 'editForm');
+					  },
+					  btn: ['确认修改', '取消'],
+					  yes: function(index) {
+						var formData = form.val('editForm');
+						if(!formData.name) {
+						  layer.msg('请输入用户名');
+						  return;
+						}
+						obj.update(formData);
+						layer.close(editIndex);
+					  }
+					});
+				  }
+				}
+			  });
+			}
+		  });
+		});
+		
+		</script>
+		<script type="text/html" id="userStatus">
+			<input type="checkbox" name="status"  checked lay-skin="switch" lay-text="已清洗|未清洗" lay-event="open" lay-filter="modifystatus" {{ d.status == '1'? 'checked' : '' }}/>
+		</script>
+		<script>
+		  layui.use(function(){
+			  // 获取laydate
+		    var laydate = layui.laydate;
+		    // 渲染
+		    laydate.render({
+		      elem: '#birthday' // 出生日期文本框的id
+		    });
+		    // 正文显示
+		    laydate.render({
+		      elem: '#createDate', // 创建日期文本框的id
+		      lang: 'cn' // 日历显示语言为中文
+		    });
+			// 年月
+			laydate.render({
+			    elem: '#ID-laydate-type-month',
+			    type: 'month'
+			  });
+			  
+		  });
+		</script>
+		</body>
+</html>
