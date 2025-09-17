@@ -2,8 +2,8 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>修改教练信息</title>
-    <link rel="stylesheet" href="../lib/layui-v2.6.3/css/layui.css">
+    <title>添加教练</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/layui-src@2.6.3/dist/css/layui.css">
     <style>
         .required::before {
             content: "*";
@@ -11,15 +11,23 @@
             margin-right: 4px;
             font-weight: bold;
         }
+        .photo-preview {
+            margin-top: 10px;
+            max-width: 300px;
+            max-height: 200px;
+            display: none;
+        }
+        .photo-container {
+            margin-left: 110px;
+        }
     </style>
 </head>
 <body>
     <fieldset class="layui-elem-field layui-field-title">
-        <legend style="font-weight: bold;">修改教练信息</legend>
+        <legend style="font-weight: bold;">添加教练</legend>
     </fieldset>
 
     <div class="layui-form" lay-filter="coachForm">
-        <!-- 姓名 -->
         <div class="layui-form-item">
             <label class="layui-form-label required">姓名</label>
             <div class="layui-input-block">
@@ -28,7 +36,6 @@
             </div>
         </div>
 
-        <!-- 性别 -->
         <div class="layui-form-item">
             <label class="layui-form-label required">性别</label>
             <div class="layui-input-block">
@@ -37,7 +44,6 @@
             </div>
         </div>
 
-        <!-- 加入日期 -->
         <div class="layui-form-item">
             <label class="layui-form-label required">加入日期</label>
             <div class="layui-input-block">
@@ -45,7 +51,6 @@
             </div>
         </div>
 
-        <!-- 身份证号 -->
         <div class="layui-form-item">
             <label class="layui-form-label required">身份证号</label>
             <div class="layui-input-block">
@@ -54,7 +59,6 @@
             </div>
         </div>
 
-        <!-- 年龄 -->
         <div class="layui-form-item">
             <label class="layui-form-label required">年龄</label>
             <div class="layui-input-block">
@@ -63,7 +67,6 @@
             </div>
         </div>
 
-        <!-- 籍贯 -->
         <div class="layui-form-item">
             <label class="layui-form-label required">籍贯</label>
             <div class="layui-input-block">
@@ -76,7 +79,6 @@
             </div>
         </div>
 
-        <!-- 个人照片 -->
         <div class="layui-form-item">
             <label class="layui-form-label required">个人照片</label>
             <button type="button" class="layui-btn layui-btn-danger" id="ID-upload-demo-size">
@@ -85,11 +87,14 @@
             <div class="layui-inline layui-word-aux">
                 不超过200kb
             </div>
-            <!-- 隐藏域：存储上传后的图片地址，便于提交 -->
+            <!-- 图片预览容器 -->
+            <div class="photo-container">
+                <img id="photoPreview" class="photo-preview" alt="照片预览">
+            </div>
             <input type="hidden" name="photoUrl" id="photoUrl" value="">
+            <input type="hidden" name="photoBase64" id="photoBase64" value="">
         </div>
 
-        <!-- 擅长领域 -->
         <div class="layui-form-item">
             <label class="layui-form-label required">擅长领域</label>
             <div class="layui-input-block">
@@ -103,7 +108,6 @@
             </div>
         </div>
 
-        <!-- 手机号 -->
         <div class="layui-form-item">
             <label class="layui-form-label required">手机号</label>
             <div class="layui-input-block">
@@ -112,7 +116,6 @@
             </div>
         </div>
 
-        <!-- 担任的职务 -->
         <div class="layui-form-item">
             <label class="layui-form-label required">担任的职务</label>
             <div class="layui-input-block">
@@ -121,7 +124,6 @@
             </div>
         </div>
 
-        <!-- 状态 -->
         <div class="layui-form-item">
             <label class="layui-form-label">状态</label>
             <div class="layui-input-block">
@@ -129,7 +131,6 @@
             </div>
         </div>
 
-        <!-- 备注 -->
         <div class="layui-form-item">
             <label class="layui-form-label">备注</label>
             <div class="layui-input-block">
@@ -137,7 +138,6 @@
             </div>
         </div>
 
-        <!-- 提交按钮 -->
         <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
@@ -145,7 +145,7 @@
         </div>
     </div>
 
-    <script src="../lib/layui-v2.6.3/layui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/layui-src@2.6.3/dist/layui.js"></script>
     <script>
         layui.use(['form', 'layer', 'laydate', 'upload'], function () {
             var form = layui.form;
@@ -162,35 +162,50 @@
                 trigger: 'click'
             });
 
-            // 2. 图片上传（将图片地址存入隐藏域）
-            upload.render({
-                elem: '#ID-upload-demo-size',
-                url: '/api/coach/upload-photo', // 替换为你的实际上传接口
-                size: 200,
-                accept: 'images',
-                acceptMime: 'image/jpg,image/jpeg,image/png',
-                done: function (res) {
-                    if (res.code === 0) {
-                        layer.msg('图片上传成功', { icon: 1 });
-                        $('#photoUrl').val(res.data.url); // 存储图片地址到隐藏域
-                    } else {
-                        layer.msg('上传失败：' + res.msg, { icon: 5 });
-                        $('#photoUrl').val(''); // 清空无效地址
+            document.getElementById('ID-upload-demo-size').addEventListener('click', function() {
+                var fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.accept = 'image/jpg,image/jpeg,image/png';
+                
+                fileInput.onchange = function(e) {
+                    var file = e.target.files[0];
+                    if (!file) return;
+                    
+                    // 验证文件大小
+                    if (file.size > 200 * 1024) {
+                        layer.msg('图片大小不能超过200kb', { icon: 5 });
+                        return;
                     }
-                },
-                error: function () {
-                    layer.msg('上传接口异常，请检查配置', { icon: 5 });
-                    $('#photoUrl').val('');
-                }
+                    
+                    // 使用FileReader处理图片
+                    var reader = new FileReader();
+                    
+                    reader.onload = function(event) {
+                        // 显示预览
+                        var preview = document.getElementById('photoPreview');
+                        preview.src = event.target.result;
+                        preview.style.display = 'block';
+                        
+                        // 存储图片信息
+                        document.getElementById('photoUrl').value = file.name;
+                        document.getElementById('photoBase64').value = event.target.result;
+                        
+                        layer.msg('图片上传成功', { icon: 1 });
+                    };
+                    
+                    // 读取文件为DataURL（base64格式）
+                    reader.readAsDataURL(file);
+                };
+                
+                // 触发文件选择框点击
+                fileInput.click();
             });
 
-            // ===================== 核心：全量表单校验函数 =====================
             function validateForm() {
-                // 2.1 姓名校验（2-10位汉字）
                 var username = $('#username').val().trim();
                 if (!username) {
                     layer.msg('姓名不能为空', { icon: 5 });
-                    $('#username').focus(); // 聚焦到错误字段
+                    $('#username').focus();
                     return false;
                 }
                 if (!/^[\u4e00-\u9fa5]{2,10}$/.test(username)) {
@@ -199,7 +214,6 @@
                     return false;
                 }
 
-                // 2.2 加入日期校验（非空）
                 var birthday = $('#birthday').val().trim();
                 if (!birthday) {
                     layer.msg('加入日期不能为空', { icon: 5 });
@@ -207,7 +221,6 @@
                     return false;
                 }
 
-                // 2.3 身份证号校验（18位有效格式）
                 var userid = $('#userid').val().trim();
                 if (!userid) {
                     layer.msg('身份证号不能为空', { icon: 5 });
@@ -221,7 +234,6 @@
                     return false;
                 }
 
-                // 2.4 年龄校验（1-3位数字）
                 var useryear = $('#useryear').val().trim();
                 if (!useryear) {
                     layer.msg('年龄不能为空', { icon: 5 });
@@ -234,7 +246,6 @@
                     return false;
                 }
 
-                // 2.5 手机号校验（11位有效格式）
                 var usertele = $('#usertele').val().trim();
                 if (!usertele) {
                     layer.msg('手机号不能为空', { icon: 5 });
@@ -247,7 +258,6 @@
                     return false;
                 }
 
-                // 2.6 职务校验（非空）
                 var userjob = $('#userjob').val().trim();
                 if (!userjob) {
                     layer.msg('职务不能为空', { icon: 5 });
@@ -255,26 +265,22 @@
                     return false;
                 }
 
-                // 2.7 图片校验（确保已上传）
                 var photoUrl = $('#photoUrl').val().trim();
                 if (!photoUrl) {
                     layer.msg('请先上传个人照片', { icon: 5 });
-                    $('#ID-upload-demo-size').focus();
                     return false;
                 }
-
-                // 所有校验通过
                 return true;
             }
 
-            // ===================== 表单提交事件 =====================
+            // 表单提交事件
             form.on('submit(saveBtn)', function (data) {
-                // 提交前先执行全量校验，校验不通过则阻止提交
+                // 提交前先执行全量校验
                 if (!validateForm()) {
-                    return false; // 格式错误，阻止提交
+                    return false;
                 }
 
-                // 校验通过，弹出提交信息
+                // 模拟表单提交成功
                 var index = layer.alert(JSON.stringify(data.field, null, 2), {
                     title: '最终提交信息',
                     area: ['500px', '400px']
@@ -283,7 +289,6 @@
                     layer.close(index);
                     var iframeIndex = parent.layer.getFrameIndex(window.name);
                     parent.layer.close(iframeIndex);
-                    parent.location.reload();
                 });
 
                 return false; // 阻止表单默认跳转
